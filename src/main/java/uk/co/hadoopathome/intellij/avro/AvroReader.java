@@ -34,4 +34,3 @@ class AvroReader {
         return records;
     }
 }
-//java.lang.LinkageError: loader constraint violation: when resolving method "org.slf4j.impl.StaticLoggerBinder.getLoggerFactory()Lorg/slf4j/ILoggerFactory;" the class loader (instance of com/intellij/ide/plugins/cl/PluginClassLoader) of the current class, org/slf4j/LoggerFactory, and the class loader (instance of com/intellij/util/lang/UrlClassLoader) for the method's defining class, org/slf4j/impl/StaticLoggerBinder, have different Class objects for the type org/slf4j/ILoggerFactory used in the signature
