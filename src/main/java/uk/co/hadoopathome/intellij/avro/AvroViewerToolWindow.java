@@ -22,7 +22,7 @@ import java.util.List;
 
 public class AvroViewerToolWindow implements ToolWindowFactory {
     private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
-    private static final int NUM_RECORDS = 1000;
+    private static final int NUM_RECORDS = 100;
     private JPanel toolWindowContent;
     private JTabbedPane tabbedPane;
     private JPanel schemaPanel;
@@ -52,16 +52,34 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     File file = ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)).get(0);
                     LOGGER.info(String.format("Received file %s", file.getAbsolutePath()));
-                    AvroReader avroReader = new AvroReader(file);
-                    setPanelAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
-                    dataTextPane.setText(avroReader.getRecords(NUM_RECORDS).toString());
-                    schemaTextPane.setText(avroReader.getSchema());
+                    populatePanes(file);
                     tabbedPane.setEnabled(true);
                 } catch (UnsupportedFlavorException | IOException e) {
                     JOptionPane.showMessageDialog(null, "Unable to read file");
                 }
             }
         };
+    }
+
+    /**
+     * Reads the Avro file and populates the panes with the schema and a sample of the data. Uses a {@link SwingWorker}
+     * to avoid freezing IntelliJ for big files.
+     *
+     * @param file the Avro file to be read
+     */
+    private void populatePanes(File file) {
+        SwingWorker swingWorker = new SwingWorker() {
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                //  JTextPane selectedPane = (JTextPane) tabbedPane.getSelectedComponent();
+                AvroReader avroReader = new AvroReader(file);
+                setPanelAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
+                dataTextPane.setText(avroReader.getRecords(NUM_RECORDS).toString());
+                schemaTextPane.setText(avroReader.getSchema());
+                return true;
+            }
+        };
+        swingWorker.execute();
     }
 
     @Override
