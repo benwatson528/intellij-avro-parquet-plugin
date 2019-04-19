@@ -6,7 +6,6 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -23,18 +22,18 @@ import java.util.List;
 
 public class AvroViewerToolWindow implements ToolWindowFactory {
     private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
+    private static final int NUM_RECORDS = 1000;
     private JPanel toolWindowContent;
     private JTabbedPane tabbedPane;
     private JPanel schemaPanel;
     private JTextPane schemaTextPane;
     private JPanel dataPanel;
     private JTextPane dataTextPane;
-    private AvroFormatter avroFormatter = new AvroFormatter();
 
     public AvroViewerToolWindow() {
         this.schemaTextPane.setEditable(false);
         this.dataTextPane.setEditable(false);
-        changePaneAlignment(this.dataTextPane, StyleConstants.ALIGN_CENTER);
+        setPanelAlignment(this.dataTextPane, StyleConstants.ALIGN_CENTER);
         this.dataTextPane.setText("Drag and drop a .avro or .avsc file here");
         this.tabbedPane.setEnabled(true);
         this.dataTextPane.setDropTarget(createDropTarget());
@@ -53,9 +52,10 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     File file = ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)).get(0);
                     LOGGER.info(String.format("Received file %s", file.getAbsolutePath()));
-                    String formatted = avroFormatter.format(file);
-                    changePaneAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
-                    dataTextPane.setText(formatted);
+                    AvroReader avroReader = new AvroReader(file);
+                    setPanelAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
+                    dataTextPane.setText(avroReader.getRecords(NUM_RECORDS).toString());
+                    schemaTextPane.setText(avroReader.getSchema());
                     tabbedPane.setEnabled(true);
                 } catch (UnsupportedFlavorException | IOException e) {
                     JOptionPane.showMessageDialog(null, "Unable to read file");
@@ -77,7 +77,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
      * @param textPane  the pane for which alignment should be changed
      * @param alignment the desired alignment, as a {@link StyleConstants} value
      */
-    private void changePaneAlignment(JTextPane textPane, int alignment) {
+    private void setPanelAlignment(JTextPane textPane, int alignment) {
         StyledDocument doc = textPane.getStyledDocument();
         SimpleAttributeSet position = new SimpleAttributeSet();
         StyleConstants.setAlignment(position, alignment);
