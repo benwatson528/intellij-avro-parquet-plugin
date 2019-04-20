@@ -47,19 +47,33 @@
             <constraints>
               <tabbedpane title="Schema"/>
             </constraints>
-            <properties/>
+            <properties>
+              <enabled value="true"/>
+            </properties>
             <border type="none"/>
             <children>
-              <scrollpane id="7116f">
+              <scrollpane id="ac233" class="org.fife.ui.rtextarea.RTextScrollPane" binding="schemaScrollPane" custom-create="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <enabled value="true"/>
+                  <foldIndicatorEnabled value="true"/>
+                  <iconRowHeaderEnabled value="false"/>
+                  <lineNumbersEnabled value="true"/>
+                </properties>
                 <border type="none"/>
                 <children>
-                  <component id="204c3" class="javax.swing.JTextPane" binding="schemaTextPane">
+                  <component id="1a438" class="org.fife.ui.rsyntaxtextarea.RSyntaxTextArea" binding="schemaTextPane" custom-create="true">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <EOLMarkersVisible value="false"/>
+                      <codeFoldingEnabled value="true"/>
+                      <editable value="false"/>
+                      <markOccurrences value="true"/>
+                      <paintMatchedBracketPair value="false"/>
+                      <syntaxEditingStyle value="text/json"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

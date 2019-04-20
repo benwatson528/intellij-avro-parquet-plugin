@@ -6,6 +6,10 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -26,16 +30,17 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     private JPanel toolWindowContent;
     private JTabbedPane tabbedPane;
     private JPanel schemaPanel;
-    private JTextPane schemaTextPane;
+    private RSyntaxTextArea schemaTextPane;
     private JPanel dataPanel;
     private JTextPane dataTextPane;
+    private RTextScrollPane schemaScrollPane;
 
     public AvroViewerToolWindow() {
         this.schemaTextPane.setEditable(false);
         this.dataTextPane.setEditable(false);
         setPanelAlignment(this.dataTextPane, StyleConstants.ALIGN_CENTER);
         this.dataTextPane.setText("Drag and drop a .avro or .avsc file here");
-        this.tabbedPane.setEnabled(true);
+        this.tabbedPane.setEnabled(false);
         this.dataTextPane.setDropTarget(createDropTarget());
         this.schemaTextPane.setDropTarget(createDropTarget());
     }
@@ -49,9 +54,16 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         return new DropTarget() {
             public void drop(DropTargetDropEvent evt) {
                 try {
+                    tabbedPane.setSelectedIndex(0);
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     File file = ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor)).get(0);
-                    LOGGER.info(String.format("Received file %s", file.getAbsolutePath()));
+                    String path = file.getPath();
+                    if (!(path.endsWith(".avro") || path.endsWith(".avsc"))) {
+                        JOptionPane.showMessageDialog(null, "File must end .avro or .avsc");
+                        return;
+                    }
+                    dataTextPane.setText(String.format("Processing file %s", path));
+                    LOGGER.info(String.format("Received file %s", path));
                     populatePanes(file);
                     tabbedPane.setEnabled(true);
                 } catch (UnsupportedFlavorException | IOException e) {
@@ -71,10 +83,12 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         SwingWorker swingWorker = new SwingWorker() {
             @Override
             protected Boolean doInBackground() throws Exception {
-                //  JTextPane selectedPane = (JTextPane) tabbedPane.getSelectedComponent();
+                dataTextPane.setText("Processing file " + file.getPath());
+                schemaTextPane.setText("Processing file " + file.getPath());
                 AvroReader avroReader = new AvroReader(file);
                 setPanelAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
-                dataTextPane.setText(avroReader.getRecords(NUM_RECORDS).toString());
+                String formatted = StringUtils.join(avroReader.getRecords(NUM_RECORDS), "\n");
+                dataTextPane.setText(formatted);
                 schemaTextPane.setText(avroReader.getSchema());
                 return true;
             }
@@ -100,5 +114,15 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         SimpleAttributeSet position = new SimpleAttributeSet();
         StyleConstants.setAlignment(position, alignment);
         doc.setParagraphAttributes(0, doc.getLength(), position, false);
+    }
+
+    /**
+     * The default IntelliJ GUI creator doesn't show line numbers or folding icon.
+     */
+    private void createUIComponents() {
+        this.schemaTextPane = new RSyntaxTextArea();
+        this.schemaTextPane.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+        this.schemaTextPane.setCodeFoldingEnabled(true);
+        this.schemaScrollPane = new RTextScrollPane(this.schemaTextPane);
     }
 }
