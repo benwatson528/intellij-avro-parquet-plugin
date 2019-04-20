@@ -6,15 +6,19 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.ui.table.JBTable;
 import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -32,17 +36,26 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     private JPanel schemaPanel;
     private RSyntaxTextArea schemaTextPane;
     private JPanel dataPanel;
-    private JTextPane dataTextPane;
+//    private JTextPane dataTextPane;
     private RTextScrollPane schemaScrollPane;
+    private JTable dataTable;
+    private JRadioButton tableRadioButton;
+    private JRadioButton rawRadioButton;
+    private JTextField numRecordsValue;
+    private JLabel numRecordsLabel;
+    private JButton updateButton;
+    private JSeparator separator;
+    private JScrollPane dataTableScroll;
 
     public AvroViewerToolWindow() {
         this.schemaTextPane.setEditable(false);
-        this.dataTextPane.setEditable(false);
-        setPanelAlignment(this.dataTextPane, StyleConstants.ALIGN_CENTER);
-        this.dataTextPane.setText("Drag and drop a .avro or .avsc file here");
+        //setPanelAlignment(this.schemaTextPane, StyleConstants.ALIGN_CENTER);
+        this.schemaTextPane.setText("Drag and drop a .avro or .avsc file here");
         this.tabbedPane.setEnabled(false);
-        this.dataTextPane.setDropTarget(createDropTarget());
+        this.dataTable.setDropTarget(createDropTarget());
         this.schemaTextPane.setDropTarget(createDropTarget());
+
+       // this.rawRadioButton.addActionListener(e -> (dataViewPanel.);
     }
 
     /**
@@ -62,7 +75,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
                         JOptionPane.showMessageDialog(null, "File must end .avro or .avsc");
                         return;
                     }
-                    dataTextPane.setText(String.format("Processing file %s", path));
+                    schemaTextPane.setText(String.format("Processing file %s", path));
                     LOGGER.info(String.format("Received file %s", path));
                     populatePanes(file);
                     tabbedPane.setEnabled(true);
@@ -83,12 +96,16 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         SwingWorker swingWorker = new SwingWorker() {
             @Override
             protected Boolean doInBackground() throws Exception {
-                dataTextPane.setText("Processing file " + file.getPath());
                 schemaTextPane.setText("Processing file " + file.getPath());
                 AvroReader avroReader = new AvroReader(file);
-                setPanelAlignment(dataTextPane, StyleConstants.ALIGN_LEFT);
-                String formatted = StringUtils.join(avroReader.getRecords(NUM_RECORDS), "\n");
-                dataTextPane.setText(formatted);
+               // setPanelAlignment(schemaTextPane, StyleConstants.ALIGN_LEFT);
+//                String formatted = StringUtils.join(avroReader.getRecords(NUM_RECORDS), "\n");
+                List<String> records = avroReader.getRecords(NUM_RECORDS);
+                TableFormatter tableFormatter = new TableFormatter(records);
+                String[] columns = tableFormatter.getColumns();
+                String[][] rows = tableFormatter.getRows();
+                TableModel tableModel = new DefaultTableModel(rows, columns);
+                dataTable.setModel(tableModel);
                 schemaTextPane.setText(avroReader.getSchema());
                 return true;
             }

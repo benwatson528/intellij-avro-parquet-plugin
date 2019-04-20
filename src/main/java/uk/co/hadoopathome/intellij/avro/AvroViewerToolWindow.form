@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="toolWindowContent" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="608" height="518"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -19,29 +19,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="b1751" binding="dataPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Data"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <scrollpane id="ed98d">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-                <border type="none"/>
-                <children>
-                  <component id="8e862" class="javax.swing.JTextPane" binding="dataTextPane">
-                    <constraints/>
-                    <properties/>
-                  </component>
-                </children>
-              </scrollpane>
-            </children>
-          </grid>
           <grid id="ed0fb" binding="schemaPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
@@ -58,9 +35,9 @@
                 </constraints>
                 <properties>
                   <enabled value="true"/>
-                  <foldIndicatorEnabled value="true"/>
+                  <foldIndicatorEnabled value="false"/>
                   <iconRowHeaderEnabled value="false"/>
-                  <lineNumbersEnabled value="true"/>
+                  <lineNumbersEnabled value="false"/>
                 </properties>
                 <border type="none"/>
                 <children>
@@ -79,8 +56,121 @@
               </scrollpane>
             </children>
           </grid>
+          <grid id="b1751" binding="dataPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Data"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="ed98d" binding="dataTableScroll">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <verticalScrollBarPolicy value="20"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="cb4d2" class="javax.swing.JTable" binding="dataTable">
+                    <constraints/>
+                    <properties>
+                      <autoCreateRowSorter value="true"/>
+                      <autoResizeMode value="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <grid id="51c29" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="400" height="-1"/>
+                    <preferred-size width="400" height="-1"/>
+                    <maximum-size width="400" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="90616" class="javax.swing.JRadioButton" binding="rawRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <horizontalAlignment value="11"/>
+                      <horizontalTextPosition value="11"/>
+                      <text value="Raw"/>
+                      <verticalAlignment value="0"/>
+                      <verticalTextPosition value="0"/>
+                    </properties>
+                  </component>
+                  <component id="56641" class="javax.swing.JTextField" binding="numRecordsValue">
+                    <constraints>
+                      <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false">
+                        <minimum-size width="100" height="-1"/>
+                        <preferred-size width="100" height="-1"/>
+                        <maximum-size width="100" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="b08e6" class="javax.swing.JLabel" binding="numRecordsLabel">
+                    <constraints>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <labelFor value="56641"/>
+                      <text value="Num records:"/>
+                    </properties>
+                  </component>
+                  <component id="2b4fe" class="javax.swing.JButton" binding="updateButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Update"/>
+                    </properties>
+                  </component>
+                  <component id="bf483" class="javax.swing.JRadioButton" binding="tableRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <horizontalAlignment value="11"/>
+                      <horizontalTextPosition value="11"/>
+                      <selected value="true"/>
+                      <text value="Table"/>
+                    </properties>
+                  </component>
+                  <component id="ba7ff" class="javax.swing.JSeparator" binding="separator">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <orientation value="1"/>
+                    </properties>
+                  </component>
+                  <hspacer id="3a390">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                </children>
+              </grid>
+            </children>
+          </grid>
         </children>
       </tabbedpane>
     </children>
   </grid>
+  <buttonGroups>
+    <group name="buttonGroup">
+      <member id="bf483"/>
+      <member id="90616"/>
+    </group>
+  </buttonGroups>
 </form>
