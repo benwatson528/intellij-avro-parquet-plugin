@@ -42,8 +42,8 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     private JSeparator separator;
     private JScrollPane dataTableScroll;
     private JPanel dataCardLayout;
-    private JTextArea dataRawTextArea;
-    private JScrollPane dataRawScroll;
+    private RSyntaxTextArea dataRawTextArea;
+    private RTextScrollPane dataRawScroll;
 
     public AvroViewerToolWindow() {
         this.schemaTextPane.setEditable(false);
@@ -135,5 +135,10 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         this.schemaTextPane.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
         this.schemaTextPane.setCodeFoldingEnabled(true);
         this.schemaScrollPane = new RTextScrollPane(this.schemaTextPane);
+
+        this.dataRawTextArea = new RSyntaxTextArea();
+        this.dataRawTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+        this.dataRawTextArea.setCodeFoldingEnabled(false);
+        this.dataRawScroll = new RTextScrollPane(this.dataRawTextArea);
     }
 }

@@ -48,7 +48,7 @@
                       <codeFoldingEnabled value="true"/>
                       <editable value="false"/>
                       <markOccurrences value="true"/>
-                      <paintMatchedBracketPair value="false"/>
+                      <paintMatchedBracketPair value="true"/>
                       <syntaxEditingStyle value="text/json"/>
                     </properties>
                   </component>
@@ -89,16 +89,28 @@
                       </component>
                     </children>
                   </scrollpane>
-                  <scrollpane id="e6e84" binding="dataRawScroll">
+                  <scrollpane id="a432f" class="org.fife.ui.rtextarea.RTextScrollPane" binding="dataRawScroll" custom-create="true">
                     <constraints>
                       <card name="dataRawCard"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <enabled value="true"/>
+                      <foldIndicatorEnabled value="false"/>
+                      <iconRowHeaderEnabled value="false"/>
+                      <lineNumbersEnabled value="false"/>
+                    </properties>
                     <border type="none"/>
                     <children>
-                      <component id="23eec" class="javax.swing.JTextArea" binding="dataRawTextArea">
+                      <component id="84a43" class="org.fife.ui.rsyntaxtextarea.RSyntaxTextArea" binding="dataRawTextArea" custom-create="true">
                         <constraints/>
-                        <properties/>
+                        <properties>
+                          <EOLMarkersVisible value="false"/>
+                          <codeFoldingEnabled value="true"/>
+                          <editable value="false"/>
+                          <markOccurrences value="true"/>
+                          <paintMatchedBracketPair value="false"/>
+                          <syntaxEditingStyle value="text/json"/>
+                        </properties>
                       </component>
                     </children>
                   </scrollpane>
