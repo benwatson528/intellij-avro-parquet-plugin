@@ -35,9 +35,9 @@
                 </constraints>
                 <properties>
                   <enabled value="true"/>
-                  <foldIndicatorEnabled value="false"/>
+                  <foldIndicatorEnabled value="true"/>
                   <iconRowHeaderEnabled value="false"/>
-                  <lineNumbersEnabled value="false"/>
+                  <lineNumbersEnabled value="true"/>
                 </properties>
                 <border type="none"/>
                 <children>
