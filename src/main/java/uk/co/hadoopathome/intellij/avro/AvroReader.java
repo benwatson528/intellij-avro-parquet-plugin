@@ -31,6 +31,7 @@ class AvroReader {
             records.add(this.dataFileReader.next().toString());
             i++;
         }
+        LOGGER.info("Retrieved " + i + " records");
         return records;
     }
 }

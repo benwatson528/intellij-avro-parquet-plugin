@@ -6,8 +6,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import com.intellij.ui.table.JBTable;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -15,9 +14,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -36,7 +32,6 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     private JPanel schemaPanel;
     private RSyntaxTextArea schemaTextPane;
     private JPanel dataPanel;
-//    private JTextPane dataTextPane;
     private RTextScrollPane schemaScrollPane;
     private JTable dataTable;
     private JRadioButton tableRadioButton;
@@ -46,16 +41,17 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     private JButton updateButton;
     private JSeparator separator;
     private JScrollPane dataTableScroll;
+    private JPanel dataCardLayout;
+    private JTextArea dataRawTextArea;
+    private JScrollPane dataRawScroll;
 
     public AvroViewerToolWindow() {
         this.schemaTextPane.setEditable(false);
-        //setPanelAlignment(this.schemaTextPane, StyleConstants.ALIGN_CENTER);
         this.schemaTextPane.setText("Drag and drop a .avro or .avsc file here");
         this.tabbedPane.setEnabled(false);
         this.dataTable.setDropTarget(createDropTarget());
         this.schemaTextPane.setDropTarget(createDropTarget());
-
-       // this.rawRadioButton.addActionListener(e -> (dataViewPanel.);
+        createRadioButtonListeners();
     }
 
     /**
@@ -98,14 +94,13 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
             protected Boolean doInBackground() throws Exception {
                 schemaTextPane.setText("Processing file " + file.getPath());
                 AvroReader avroReader = new AvroReader(file);
-               // setPanelAlignment(schemaTextPane, StyleConstants.ALIGN_LEFT);
-//                String formatted = StringUtils.join(avroReader.getRecords(NUM_RECORDS), "\n");
                 List<String> records = avroReader.getRecords(NUM_RECORDS);
                 TableFormatter tableFormatter = new TableFormatter(records);
                 String[] columns = tableFormatter.getColumns();
                 String[][] rows = tableFormatter.getRows();
                 TableModel tableModel = new DefaultTableModel(rows, columns);
                 dataTable.setModel(tableModel);
+                dataRawTextArea.setText(StringUtils.join(records, "\n"));
                 schemaTextPane.setText(avroReader.getSchema());
                 return true;
             }
@@ -113,24 +108,23 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         swingWorker.execute();
     }
 
+    private void createRadioButtonListeners() {
+        this.rawRadioButton.addActionListener(e -> {
+            CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
+            cardLayout.show(dataCardLayout, "dataRawCard");
+        });
+
+        this.tableRadioButton.addActionListener(e -> {
+            CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
+            cardLayout.show(dataCardLayout, "dataTableCard");
+        });
+    }
+
     @Override
     public void createToolWindowContent(Project project, ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(this.toolWindowContent, "", false);
         toolWindow.getContentManager().addContent(content);
-    }
-
-    /**
-     * Changes the alignment of text within a pane.
-     *
-     * @param textPane  the pane for which alignment should be changed
-     * @param alignment the desired alignment, as a {@link StyleConstants} value
-     */
-    private void setPanelAlignment(JTextPane textPane, int alignment) {
-        StyledDocument doc = textPane.getStyledDocument();
-        SimpleAttributeSet position = new SimpleAttributeSet();
-        StyleConstants.setAlignment(position, alignment);
-        doc.setParagraphAttributes(0, doc.getLength(), position, false);
     }
 
     /**
