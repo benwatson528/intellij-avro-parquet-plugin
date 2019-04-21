@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
@@ -22,12 +22,8 @@ dependencies {
     testCompile("junit:junit:4.12")
 }
 
-intellij {
-    version '2018.2.2'
-}
-
 patchPluginXml {
+    sinceBuild "170"
     changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      Version 1.0.0 - initial implementation, displays Avro files"""
 }

@@ -6,9 +6,11 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.util.ui.UIUtil;
 import org.apache.commons.lang.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -92,7 +94,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     }
 
     /**
-     * The default IntelliJ GUI creator doesn't show line numbers or folding icon.
+     * The default IntelliJ GUI creator doesn't show line numbers or folding icon for RSyntaxTextArea panels.
      */
     private void createUIComponents() {
         this.schemaTextPane = new RSyntaxTextArea();
@@ -101,11 +103,30 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         this.schemaScrollPane = new RTextScrollPane(this.schemaTextPane);
         this.schemaTextPane.setEditable(false);
         this.schemaTextPane.setText("Drag and drop a .avro file here");
+        setTheme(this.schemaTextPane);
 
         this.dataRawTextArea = new RSyntaxTextArea();
         this.dataRawTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
         this.dataRawTextArea.setCodeFoldingEnabled(false);
         this.dataRawScroll = new RTextScrollPane(this.dataRawTextArea);
+        setTheme(this.dataRawTextArea);
+    }
+
+    /**
+     * Detects if the IntelliJ Darcula theme is being used, and updates the JSON colours accordingly. Any other theme
+     * (even dark ones) will appear with a white background.
+     *
+     * @param rSyntaxTextArea the text area whose colours should be updated
+     */
+    private void setTheme(RSyntaxTextArea rSyntaxTextArea) {
+        if (UIUtil.isUnderDarcula()) {
+            try {
+                Theme theme = Theme.load(getClass().getClassLoader().getResourceAsStream("META-INF/dark.xml"));
+                theme.apply(rSyntaxTextArea);
+            } catch (IOException e) {
+                LOGGER.warn("Unable to find theme file, defaulting to light theme");
+            }
+        }
     }
 
     /**
