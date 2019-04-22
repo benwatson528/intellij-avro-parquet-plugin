@@ -16,8 +16,7 @@ Features include:
 
 ## Installing
 
-Following a [JetBrains policy change](https://blog.jetbrains.com/platform/2018/05/legal-news-plugin-license-is-required-for-all-plugins/),
-it is not possible for me to upload this plugin to the JetBrains plugin repo. As such, installation is manual. 
+The plugin was [uploaded to the JetBrains plugin repo](https://plugins.jetbrains.com/plugin/12281-avro-viewer) on 22nd April 2019, and should be visible in a day or two. Until then, installation is manual:
 
 1. [Download the plugin](https://github.com/benwatson528/intellij-avro-plugin/raw/master/releases/intellij-avro-viewer-1.0.0.zip) (or check out and build this project yourself).
 2. In IntelliJ, go to `File -> Settings -> Plugins -> settings cog -> Install Plugin from Disk...` and select the
