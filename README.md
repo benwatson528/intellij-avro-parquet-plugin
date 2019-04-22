@@ -16,12 +16,7 @@ Features include:
 
 ## Installing
 
-The plugin was [uploaded to the JetBrains plugin repo](https://plugins.jetbrains.com/plugin/12281-avro-viewer) on 22nd April 2019, and should be visible in a day or two. Until then, installation is manual:
-
-1. [Download the plugin](https://github.com/benwatson528/intellij-avro-plugin/raw/master/releases/intellij-avro-viewer-1.0.0.zip) (or check out and build this project yourself).
-2. In IntelliJ, go to `File -> Settings -> Plugins -> settings cog -> Install Plugin from Disk...` and select the
-downloaded zip.
-3. After a restart, the `Avro Viewer` Tool Window should be visible at the bottom of IntelliJ.
+Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-viewer). Search "Avro Viewer" in IntelliJ's Plugins window.
 
 
 ## Images
@@ -36,3 +31,7 @@ downloaded zip.
 ## Improvements/New Features
 
 Raise a [PR](https://github.com/benwatson528/intellij-avro-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-plugin/issues).
+
+## License
+
+https://www.apache.org/licenses/LICENSE-2.0
