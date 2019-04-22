@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.0'
+version '1.0.1'
 
 sourceCompatibility = 1.8
 
@@ -25,5 +25,6 @@ dependencies {
 patchPluginXml {
     sinceBuild "170"
     changeNotes """
-      Version 1.0.0 - initial implementation, displays Avro files"""
+      <em>Version 1.0.1</em> - fixing missing line numbers and folding in schema<br>
+      <em>Version 1.0.0</em> - initial implementation, displays Avro files"""
 }
