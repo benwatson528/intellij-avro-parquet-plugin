@@ -101,6 +101,8 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
         this.schemaTextPane.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
         this.schemaTextPane.setCodeFoldingEnabled(true);
         this.schemaScrollPane = new RTextScrollPane(this.schemaTextPane);
+        this.schemaScrollPane.setFoldIndicatorEnabled(true);
+        this.schemaScrollPane.setLineNumbersEnabled(true);
         this.schemaTextPane.setEditable(false);
         this.schemaTextPane.setText("Drag and drop a .avro file here");
         setTheme(this.schemaTextPane);

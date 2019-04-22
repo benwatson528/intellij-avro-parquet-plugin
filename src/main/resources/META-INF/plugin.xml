@@ -1,13 +1,14 @@
 <idea-plugin>
     <id>uk.co.hadoopathome.intellij.avro.intellijavroviewer</id>
     <name>Avro Viewer</name>
-    <description>An Avro viewing ToolWindow plugin for IntelliJ</description>
-    <version>1.0.0</version>
+    <description>A Tool Window for viewing Avro files and their schemas</description>
+    <version>1.0.1</version>
     <vendor email="ben@bwinsights.co.uk" url="http://www.hadoopathome.co.uk">Ben Watson</vendor>
 
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Avro Viewer" anchor="bottom" factoryClass="uk.co.hadoopathome.intellij.avro.AvroViewerToolWindow" />
+        <toolWindow id="Avro Viewer" anchor="bottom"
+                    factoryClass="uk.co.hadoopathome.intellij.avro.AvroViewerToolWindow"/>
     </extensions>
 </idea-plugin>

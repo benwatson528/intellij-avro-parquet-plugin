@@ -21,9 +21,18 @@ Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 
 ## Images
 
+
+##### Table view:
+
 ![table view](images/table-view.png "Table view")
 
+
+##### Raw view:
+
 ![raw view](images/raw-view.png "Raw view")
+
+
+##### Schema view:
 
 ![schema view](images/schema-view.png "Schema view")
 
@@ -31,6 +40,7 @@ Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 ## Improvements/New Features
 
 Raise a [PR](https://github.com/benwatson528/intellij-avro-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-plugin/issues).
+
 
 ## License
 
