@@ -21,7 +21,7 @@ class AvroReader {
     }
 
     String getSchema() {
-        return dataFileReader.getSchema().toString(true);
+        return this.dataFileReader.getSchema().toString(true);
     }
 
     List<String> getRecords(int numRecords) {

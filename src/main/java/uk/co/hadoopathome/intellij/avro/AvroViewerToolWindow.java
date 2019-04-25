@@ -14,8 +14,6 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -31,6 +29,7 @@ import java.util.List;
 public class AvroViewerToolWindow implements ToolWindowFactory {
     private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
     private static final String ALL = "All";
+    private final JTableHandler jTableHandler;
     private JPanel toolWindowContent;
     private JTabbedPane tabbedPane;
     private JPanel schemaPanel;
@@ -53,7 +52,10 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
 
     public AvroViewerToolWindow() {
         this.dataTable.setDropTarget(createDropTarget());
+        this.dataTableScroll.setDropTarget(createDropTarget());
+        this.dataRawTextArea.setDropTarget(createDropTarget());
         this.schemaTextPane.setDropTarget(createDropTarget());
+        this.jTableHandler = new JTableHandler(this.dataTable);
         createDataPaneRadioButtonListeners();
         createComboBoxListener();
     }
@@ -145,11 +147,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
                 schemaTextPane.setText("Processing file " + file.getPath());
                 AvroReader avroReader = new AvroReader(file);
                 List<String> records = avroReader.getRecords(numRecords);
-                TableFormatter tableFormatter = new TableFormatter(records);
-                String[] columns = tableFormatter.getColumns();
-                String[][] rows = tableFormatter.getRows();
-                TableModel tableModel = new DefaultTableModel(rows, columns);
-                dataTable.setModel(tableModel);
+                jTableHandler.updateTable(records);
                 dataRawTextArea.setText(StringUtils.join(records, "\n"));
                 schemaTextPane.setText(avroReader.getSchema());
                 fileInfoLabel.setText("Displaying " + records.size() + " records from " + file.getPath());
