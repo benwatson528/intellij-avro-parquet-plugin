@@ -42,6 +42,14 @@ Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 Raise a [PR](https://github.com/benwatson528/intellij-avro-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-plugin/issues).
 
 
+## Releasing/Building Locally
+
+This project can be build locally and manually imported to IntelliJ. To do this:
+
+1. Build the project with `gradlew clean build`.
+2. Take the jar in `build/distributions` and navigate to `Settings` -> `Plugins` -> `Install Plugin From Disk...`.
+
+
 ## License
 
 https://www.apache.org/licenses/LICENSE-2.0
