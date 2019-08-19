@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.7'
+    id 'org.jetbrains.intellij' version '0.4.10'
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.2'
+version '1.0.3'
 
 sourceCompatibility = 1.8
 
@@ -25,5 +25,5 @@ dependencies {
 patchPluginXml {
     sinceBuild "170"
     changeNotes """
-      Support for deeply nested schemas, and some small UI improvements including automatic column resizing"""
+      Support for IntelliJ 2019.2"""
 }
