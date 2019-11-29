@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.10'
+    id 'org.jetbrains.intellij' version '0.4.14'
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.3'
+version '1.0.4'
 
 sourceCompatibility = 1.8
 
@@ -23,7 +23,6 @@ dependencies {
 }
 
 patchPluginXml {
-    sinceBuild "170"
     changeNotes """
-      Support for IntelliJ 2019.2"""
+      Support for IntelliJ 2019.3"""
 }
