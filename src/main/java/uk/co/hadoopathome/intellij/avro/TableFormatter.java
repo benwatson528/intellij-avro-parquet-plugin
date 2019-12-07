@@ -1,6 +1,7 @@
 package uk.co.hadoopathome.intellij.avro;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intellij.openapi.diagnostic.Logger;
@@ -40,7 +41,9 @@ class TableFormatter {
             String[] values = new String[this.columns.length];
             for (int j = 0; j < this.columns.length; j++) {
                 String column = this.columns[j];
-                if (flattenedRecord.has(column) && !flattenedRecord.get(column).isJsonNull()) {
+                if (flattenedRecord.has(column)) {
+                  JsonElement value = flattenedRecord.get(column);
+                  if (!value.isJsonNull() && !(value.isJsonArray() && value.getAsJsonArray().size() == 0))
                     values[j] = flattenedRecord.get(column).getAsString();
                 }
             }
