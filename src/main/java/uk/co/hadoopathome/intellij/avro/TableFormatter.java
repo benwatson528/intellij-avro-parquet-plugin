@@ -6,9 +6,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intellij.openapi.diagnostic.Logger;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /** Takes the JSON records and places them into the format expected by JTable. */
 class TableFormatter {
@@ -61,7 +61,7 @@ class TableFormatter {
    * @return a Set of all possible columns
    */
   private String[] constructAllColumns() {
-    Set<String> totalKeys = new HashSet<>();
+    Set<String> totalKeys = new TreeSet<>();
     for (JsonObject flattenedRecord : this.flattenedRecords) {
       totalKeys.addAll(flattenedRecord.keySet());
     }
