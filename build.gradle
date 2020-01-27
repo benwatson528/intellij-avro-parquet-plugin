@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.5'
+version '1.0.6'
 
 repositories {
     mavenCentral()
@@ -22,5 +22,5 @@ dependencies {
 
 patchPluginXml {
     changeNotes """
-      Ignoring unparseable fields (such as fields serialised by external libraries)"""
+      Ordering output columns for easier readability"""
 }
