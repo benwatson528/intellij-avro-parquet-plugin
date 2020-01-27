@@ -58,9 +58,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
   private JLabel fileInfoLabel;
   private File currentFile;
 
-  /**
-   * Creates thhe IntellIJ Tool Window.
-   */
+  /** Creates the IntelliJ Tool Window. */
   public AvroViewerToolWindow() {
     this.dataTable.setDropTarget(createDropTarget());
     this.dataTableScroll.setDropTarget(createDropTarget());
