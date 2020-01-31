@@ -1,14 +1,17 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.15'
+    id 'org.jetbrains.intellij' version '0.4.14'
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.6'
+version '1.0.9'
 
 repositories {
     mavenCentral()
 }
+
+sourceCompatibility = JavaVersion.VERSION_1_8;
+targetCompatibility = JavaVersion.VERSION_1_8;
 
 dependencies {
     compile("org.apache.avro:avro:1.8.2") {
@@ -21,6 +24,7 @@ dependencies {
 }
 
 patchPluginXml {
+    sinceBuild("171")
     changeNotes """
-      Ordering output columns for easier readability"""
+      Building with older IntelliJ versions"""
 }
