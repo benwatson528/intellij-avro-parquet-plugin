@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.fileformat;
+package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

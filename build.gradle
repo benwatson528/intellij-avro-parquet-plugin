@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.intellij' version '0.4.16'
 }
 
-group 'uk.co.hadoopathome.intellij.avro'
+group 'uk.co.hadoopathome.intellij.viewer'
 version '1.0.10'
 
 repositories {

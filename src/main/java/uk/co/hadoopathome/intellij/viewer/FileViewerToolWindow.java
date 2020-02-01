@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro;
+package uk.co.hadoopathome.intellij.viewer;
 
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -34,12 +34,13 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import uk.co.hadoopathome.intellij.avro.fileformat.AvroReader;
-import uk.co.hadoopathome.intellij.avro.fileformat.Reader;
-import uk.co.hadoopathome.intellij.avro.table.JTableHandler;
+import uk.co.hadoopathome.intellij.viewer.fileformat.AvroReader;
+import uk.co.hadoopathome.intellij.viewer.fileformat.ParquetReader;
+import uk.co.hadoopathome.intellij.viewer.fileformat.Reader;
+import uk.co.hadoopathome.intellij.viewer.table.JTableHandler;
 
-public class AvroViewerToolWindow implements ToolWindowFactory {
-  private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
+public class FileViewerToolWindow implements ToolWindowFactory {
+  private static final Logger LOGGER = Logger.getInstance(FileViewerToolWindow.class);
   private static final String ALL = "All";
   private static final String STARTUP_MESSAGE = "Drag and drop a valid .avro file here";
   private final JTableHandler tableHandler;
@@ -64,7 +65,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
   private File currentFile;
 
   /** Creates the IntelliJ Tool Window. */
-  public AvroViewerToolWindow() {
+  public FileViewerToolWindow() {
     this.dataTable.setDropTarget(createDropTarget());
     this.dataTableScroll.setDropTarget(createDropTarget());
     this.dataRawTextArea.setDropTarget(createDropTarget());
@@ -89,8 +90,8 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
               ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor))
                   .get(0);
           String path = file.getPath();
-          if (!path.endsWith(".avro")) {
-            JOptionPane.showMessageDialog(null, "Must be a .avro file");
+          if (!path.endsWith(".avro") && !path.endsWith(".parquet")) {
+            JOptionPane.showMessageDialog(null, "Must be a .avro or .parquet file");
             return;
           }
           schemaTextPane.setText(String.format("Processing file %s", path));
@@ -165,7 +166,10 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
           protected Boolean doInBackground() {
             schemaTextPane.setText(String.format("Processing file %s", file.getPath()));
             try {
-              Reader reader = new AvroReader(file);
+              Reader reader =
+                  currentFile.getName().endsWith("avro")
+                      ? new AvroReader(currentFile)
+                      : new ParquetReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
               tableHandler.updateTable(records);
               dataRawTextArea.setText(StringUtils.join(records, "\n"));

@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.table;
+package uk.co.hadoopathome.intellij.viewer.table;
 
 import java.awt.Component;
 import java.util.List;

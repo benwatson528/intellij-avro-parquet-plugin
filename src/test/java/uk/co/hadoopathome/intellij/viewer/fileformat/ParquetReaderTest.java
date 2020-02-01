@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.fileformat;
+package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,7 +17,7 @@ public class ParquetReaderTest {
     File file = new File(getClass().getClassLoader().getResource(PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetReader(file);
     String schema = parquetReader.getSchema();
-    assertTrue(schema.contains("A basic schema for storing Twitter messages"));
+    assertTrue(schema.contains("optional double salary"));
   }
 
   @Test

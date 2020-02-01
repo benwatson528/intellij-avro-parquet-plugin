@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.table;
+package uk.co.hadoopathome.intellij.viewer.table;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
 import com.google.gson.JsonElement;
