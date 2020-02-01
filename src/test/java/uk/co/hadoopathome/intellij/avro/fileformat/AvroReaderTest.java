@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
-import uk.co.hadoopathome.intellij.avro.fileformat.AvroReader;
-import uk.co.hadoopathome.intellij.avro.fileformat.Reader;
 
 public class AvroReaderTest {
   private static final String TWITTER_AVRO_FILE = "twitter.avro";
