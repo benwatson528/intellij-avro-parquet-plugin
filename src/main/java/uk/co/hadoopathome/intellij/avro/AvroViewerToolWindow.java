@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,11 +35,13 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import uk.co.hadoopathome.intellij.avro.fileformat.AvroReader;
+import uk.co.hadoopathome.intellij.avro.fileformat.Reader;
 import uk.co.hadoopathome.intellij.avro.table.JTableHandler;
 
 public class AvroViewerToolWindow implements ToolWindowFactory {
   private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
   private static final String ALL = "All";
+  private static final String STARTUP_MESSAGE = "Drag and drop a valid .avro file here";
   private final JTableHandler tableHandler;
   private JPanel toolWindowContent;
   private JTabbedPane tabbedPane;
@@ -120,7 +123,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     this.schemaScrollPane.setFoldIndicatorEnabled(true);
     this.schemaScrollPane.setLineNumbersEnabled(true);
     this.schemaTextPane.setEditable(false);
-    this.schemaTextPane.setText("Drag and drop a .avro file here");
+    this.schemaTextPane.setText(STARTUP_MESSAGE);
     setTheme(this.schemaTextPane);
 
     this.dataRawTextArea = new RSyntaxTextArea();
@@ -131,8 +134,8 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
   }
 
   /**
-   * Detects if the IntelliJ Darcula theme is being used, and updates the JSON colours accordingly.
-   * Any other theme (even dark ones) will appear with a white background.
+   * Detects if the IntelliJ Darcula theme is being used, and updates the pane's colours
+   * accordingly. Any other theme (even dark ones) will appear with a white background.
    *
    * @param syntaxTextArea the text area whose colours should be updated
    */
@@ -159,16 +162,27 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     SwingWorker swingWorker =
         new SwingWorker() {
           @Override
-          protected Boolean doInBackground() throws Exception {
-            schemaTextPane.setText("Processing file " + file.getPath());
-            AvroReader avroReader = new AvroReader(file);
-            List<String> records = avroReader.getRecords(numRecords);
-            tableHandler.updateTable(records);
-            dataRawTextArea.setText(StringUtils.join(records, "\n"));
-            schemaTextPane.setText(avroReader.getSchema());
-            fileInfoLabel.setText(
-                "Displaying " + records.size() + " records from " + file.getPath());
-            return true;
+          protected Boolean doInBackground() {
+            schemaTextPane.setText(String.format("Processing file %s", file.getPath()));
+            try {
+              Reader reader = new AvroReader(file);
+              List<String> records = reader.getRecords(numRecords);
+              tableHandler.updateTable(records);
+              dataRawTextArea.setText(StringUtils.join(records, "\n"));
+              schemaTextPane.setText(reader.getSchema());
+              fileInfoLabel.setText(
+                  String.format("Displaying %d records from %s", records.size(), file.getPath()));
+              return true;
+            } catch (OutOfMemoryError | IOException e) {
+              JOptionPane.showMessageDialog(
+                  new JFrame(),
+                  "Unable to process file, see IDEA logs for more information",
+                  "Error",
+                  JOptionPane.ERROR_MESSAGE);
+              LOGGER.warn("Unable to process file", e);
+              schemaTextPane.setText(STARTUP_MESSAGE);
+              return false;
+            }
           }
         };
     swingWorker.execute();

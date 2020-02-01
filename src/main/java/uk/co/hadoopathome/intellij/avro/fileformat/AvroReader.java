@@ -12,9 +12,9 @@ import org.apache.avro.io.DatumReader;
 
 public class AvroReader implements Reader {
   private static final Logger LOGGER = Logger.getInstance(AvroReader.class);
-  private final DataFileReader<GenericRecord> dataFileReader;
+  private DataFileReader<GenericRecord> dataFileReader;
 
-  public AvroReader(File file) throws IOException {
+  public AvroReader(File file) throws OutOfMemoryError, IOException {
     DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
     this.dataFileReader = new DataFileReader<>(file, datumReader);
   }
@@ -32,7 +32,7 @@ public class AvroReader implements Reader {
       records.add(this.dataFileReader.next().toString());
       i++;
     }
-    LOGGER.info("Retrieved " + i + " records");
+    LOGGER.info(String.format("Retrieved %d records", i));
     return records;
   }
 }

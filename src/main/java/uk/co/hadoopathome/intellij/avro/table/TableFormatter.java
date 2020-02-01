@@ -65,7 +65,7 @@ class TableFormatter {
     for (JsonObject flattenedRecord : this.flattenedRecords) {
       totalKeys.addAll(flattenedRecord.keySet());
     }
-    LOGGER.info("Found " + totalKeys.size() + " unique columns");
+    LOGGER.info(String.format("Found %d unique columns", totalKeys.size()));
     return totalKeys.toArray(new String[0]);
   }
 }
