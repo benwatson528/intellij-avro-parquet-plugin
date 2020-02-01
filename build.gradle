@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.14'
+    id 'org.jetbrains.intellij' version '0.4.16'
 }
 
 group 'uk.co.hadoopathome.intellij.avro'
-version '1.0.9'
+version '1.0.10'
 
 repositories {
     mavenCentral()
@@ -14,9 +14,10 @@ sourceCompatibility = JavaVersion.VERSION_1_8;
 targetCompatibility = JavaVersion.VERSION_1_8;
 
 dependencies {
-    compile("org.apache.avro:avro:1.8.2") {
+    compile("org.apache.avro:avro:1.9.1") {
         exclude group: 'org.slf4j'
     }
+    compile("org.xerial.snappy:snappy-java:1.1.7.3")
     compile("com.google.code.gson:gson:2.8.5")
     compile("com.fifesoft:rsyntaxtextarea:3.0.3")
     compile("com.github.wnameless:json-flattener:0.6.0")

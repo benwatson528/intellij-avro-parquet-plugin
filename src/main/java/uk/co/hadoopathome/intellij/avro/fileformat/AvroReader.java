@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro;
+package uk.co.hadoopathome.intellij.avro.fileformat;
 
 import com.intellij.openapi.diagnostic.Logger;
 import java.io.File;
@@ -10,27 +10,29 @@ import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 
-class AvroReader {
+public class AvroReader implements Reader {
   private static final Logger LOGGER = Logger.getInstance(AvroReader.class);
-  private final DataFileReader<GenericRecord> dataFileReader;
+  private DataFileReader<GenericRecord> dataFileReader;
 
-  AvroReader(File file) throws IOException {
+  public AvroReader(File file) throws OutOfMemoryError, IOException {
     DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
     this.dataFileReader = new DataFileReader<>(file, datumReader);
   }
 
-  String getSchema() {
+  @Override
+  public String getSchema() {
     return this.dataFileReader.getSchema().toString(true);
   }
 
-  List<String> getRecords(int numRecords) {
+  @Override
+  public List<String> getRecords(int numRecords) {
     int i = 0;
     List<String> records = new ArrayList<>();
     while (this.dataFileReader.hasNext() && i < numRecords) {
       records.add(this.dataFileReader.next().toString());
       i++;
     }
-    LOGGER.info("Retrieved " + i + " records");
+    LOGGER.info(String.format("Retrieved %d records", i));
     return records;
   }
 }
