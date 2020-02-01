@@ -33,6 +33,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import uk.co.hadoopathome.intellij.avro.fileformat.AvroReader;
+import uk.co.hadoopathome.intellij.avro.table.JTableHandler;
 
 public class AvroViewerToolWindow implements ToolWindowFactory {
   private static final Logger LOGGER = Logger.getInstance(AvroViewerToolWindow.class);
@@ -175,14 +177,14 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
   private void createDataPaneRadioButtonListeners() {
     this.rawRadioButton.addActionListener(
         e -> {
-          CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
-          cardLayout.show(dataCardLayout, "dataRawCard");
+          CardLayout cardLayout = (CardLayout) this.dataCardLayout.getLayout();
+          cardLayout.show(this.dataCardLayout, "dataRawCard");
         });
 
     this.tableRadioButton.addActionListener(
         e -> {
-          CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
-          cardLayout.show(dataCardLayout, "dataTableCard");
+          CardLayout cardLayout = (CardLayout) this.dataCardLayout.getLayout();
+          cardLayout.show(this.dataCardLayout, "dataTableCard");
         });
   }
 
@@ -195,7 +197,7 @@ public class AvroViewerToolWindow implements ToolWindowFactory {
     this.numRecordsComboBox.addItemListener(
         e -> {
           if (e.getStateChange() == ItemEvent.SELECTED) {
-            if (currentFile == null) {
+            if (this.currentFile == null) {
               return;
             }
             Object item = e.getItem();

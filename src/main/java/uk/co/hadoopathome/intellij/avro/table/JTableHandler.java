@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro;
+package uk.co.hadoopathome.intellij.avro.table;
 
 import java.awt.Component;
 import java.util.List;
@@ -12,10 +12,10 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /** Manages the JTable. */
-class JTableHandler {
+public class JTableHandler {
   private final JTable table;
 
-  JTableHandler(JTable table) {
+  public JTableHandler(JTable table) {
     this.table = table;
   }
 
@@ -24,7 +24,7 @@ class JTableHandler {
    *
    * @param records the raw JSON records to be added to the table
    */
-  void updateTable(List<String> records) {
+  public void updateTable(List<String> records) {
     TableFormatter tableFormatter = new TableFormatter(records);
     String[] columns = tableFormatter.getColumns();
     String[][] rows = tableFormatter.getRows();
