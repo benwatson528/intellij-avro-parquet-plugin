@@ -9,10 +9,10 @@ import java.util.List;
 import org.junit.Test;
 
 public class AvroReaderTest {
-  private static final String TWITTER_AVRO_FILE = "twitter.avro";
+  private static final String TWITTER_AVRO_FILE = "avro/twitter.avro";
   // https://github.com/apache/incubator-gobblin/blob/master/gobblin-core/src/test/resources/converter/pickfields_nested_with_union.avro
-  private static final String COMPLEX_AVRO_FILE = "pickfields_nested_with_union.avro";
-  private static final String INVALID_AVRO_FILE = "invalid.avro";
+  private static final String COMPLEX_AVRO_FILE = "avro/pickfields_nested_with_union.avro";
+  private static final String INVALID_AVRO_FILE = "avro/invalid.avro";
 
   @Test
   public void testGetSchema() throws IOException {
