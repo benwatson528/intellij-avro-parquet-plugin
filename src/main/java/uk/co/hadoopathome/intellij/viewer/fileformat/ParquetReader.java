@@ -34,9 +34,9 @@ public class ParquetReader implements Reader {
     System.out.println("parquet inside");
     try {
       Configuration conf = new Configuration();
-
       conf.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
       conf.set("fs.file.impl", org.apache.hadoop.fs.LocalFileSystem.class.getName());
+      System.out.println("test");
 
       Path path = new Path(file.getPath());
 
