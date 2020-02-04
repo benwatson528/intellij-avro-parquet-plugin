@@ -1,8 +1,8 @@
-# IntelliJ Avro Plugin
+# IntelliJ Avro and Parquet Viewer Plugin
 
 ## Overview
 
-A Tool Window plugin for IntelliJ that displays Avro `.avro` files in human-readable JSON format.
+A Tool Window plugin for IntelliJ that displays Avro `.avro` and Parquet `.parquet` files in human-readable JSON format.
 
 Features include:
  - Foldable schema viewing ([RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea))
@@ -16,7 +16,8 @@ Features include:
 
 ## Installing
 
-Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-viewer). Search "Avro Viewer" in IntelliJ's Plugins window.
+Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-viewer). Search "Avro and
+Parquet Viewer" in IntelliJ's Plugins window.
 
 
 ## Images
