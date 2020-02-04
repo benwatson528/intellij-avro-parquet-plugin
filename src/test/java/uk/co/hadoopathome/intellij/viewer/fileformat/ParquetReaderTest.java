@@ -30,4 +30,14 @@ public class ParquetReaderTest {
     String firstRecord = records.get(0);
     assertTrue(firstRecord.contains("\"ip_address\":\"1.197.201.2\""));
   }
+
+  @Test
+  public void testGetAllRecords() throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(PARQUET_FILE).getFile());
+    Reader parquetReader = new ParquetReader(file);
+    List<String> records = parquetReader.getRecords(99999);
+    assertEquals(1000, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(firstRecord.contains("\"ip_address\":\"1.197.201.2\""));
+  }
 }

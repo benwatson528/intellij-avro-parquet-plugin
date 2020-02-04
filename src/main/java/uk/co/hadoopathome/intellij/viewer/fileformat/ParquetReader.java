@@ -48,13 +48,12 @@ public class ParquetReader implements Reader {
         records.add(convertParquetGroupToJsonString(group));
         totalNumRecordsRead++;
         if (totalNumRecordsRead >= numRecords) {
-          LOGGER.info("Retrieved " + totalNumRecordsRead + " records");
+          LOGGER.info(String.format("Retrieved %d records", totalNumRecordsRead));
           return records;
         }
       }
     }
-
-    LOGGER.info("Retrieved " + totalNumRecordsRead + " records");
+    LOGGER.info(String.format("Retrieved %d records", totalNumRecordsRead));
     return records;
   }
 
@@ -64,7 +63,7 @@ public class ParquetReader implements Reader {
    * @param group the Parquet Group (analogous to a row in any other file)
    * @return the JSONObject representing the record
    */
-  private String convertParquetGroupToJsonString(final Group group) {
+  private String convertParquetGroupToJsonString(final Group group) throws IOException {
     JSONObject jsonObject = new JSONObject();
 
     int fieldCount = group.getType().getFieldCount();
@@ -77,14 +76,14 @@ public class ParquetReader implements Reader {
           try {
             jsonObject.put(fieldName, group.getValueToString(field, index));
           } catch (JSONException e) {
-            LOGGER.error("Unable to convert object to Parquet");
+            throw new IOException("Unable to convert object to Parquet", e);
           }
         } else {
           try {
             jsonObject.put(
                 fieldName, convertParquetGroupToJsonString(group.getGroup(field, index)));
           } catch (JSONException e) {
-            e.printStackTrace();
+            throw new IOException("Unable to convert object to Parquet", e);
           }
         }
       }
