@@ -28,7 +28,6 @@ dependencies {
     compile("org.apache.hadoop:hadoop-common:3.1.0")
     compile("org.apache.hadoop:hadoop-main:3.1.0")
     compile("org.apache.hadoop:hadoop-hdfs:3.1.0")
-    compile("com.google.code.gson:gson:2.2.2")
 
     //Test dependencies
     testCompile("junit:junit:4.12")

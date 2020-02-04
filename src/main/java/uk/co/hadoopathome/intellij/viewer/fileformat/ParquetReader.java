@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.parquet.column.page.PageReadStore;
 import org.apache.parquet.example.data.Group;
-import org.apache.parquet.example.data.simple.SimpleGroup;
 import org.apache.parquet.example.data.simple.convert.GroupRecordConverter;
 import org.apache.parquet.hadoop.ParquetFileReader;
 import org.apache.parquet.io.ColumnIOFactory;
@@ -25,9 +24,8 @@ public class ParquetReader implements Reader {
   private final MessageType schema;
 
   public ParquetReader(File file) throws IOException {
-    List<SimpleGroup> simpleGroups = new ArrayList<>();
-
-    this.reader = ParquetFileReader.open(MyInputFile.nioPathToInputFile(file.toPath()));
+    this.reader = ParquetFileReader
+        .open(MyInputFile.nioPathToInputFile(file.toPath()));
 
     this.schema = this.reader.getFileMetaData().getSchema();
   }
@@ -67,6 +65,7 @@ public class ParquetReader implements Reader {
    * Source: https://stackoverflow.com/a/55476606/729819
    *
    * @param group the Parquet Group (analogous to a row in any other file)
+   *
    * @return the JSONObject representing the record
    */
   private String convertParquetGroupToJsonString(final Group group) {
