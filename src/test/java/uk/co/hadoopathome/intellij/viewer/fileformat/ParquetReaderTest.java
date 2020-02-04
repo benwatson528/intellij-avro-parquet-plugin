@@ -12,6 +12,9 @@ public class ParquetReaderTest {
 
   // https://github.com/Teradata/kylo/blob/master/samples/sample-data/parquet/userdata1.parquet
   private static final String PARQUET_FILE = "parquet/userdata1.parquet";
+  // Converted from
+  // https://github.com/apache/incubator-gobblin/blob/master/gobblin-core/src/test/resources/converter/pickfields_nested_with_union.avro
+  private static final String NESTED_PARQUET_FILE = "parquet/nested.parquet";
 
   @Test
   public void testGetSchema() throws IOException {
@@ -39,5 +42,15 @@ public class ParquetReaderTest {
     assertEquals(1000, records.size());
     String firstRecord = records.get(0);
     assertTrue(firstRecord.contains("\"ip_address\":\"1.197.201.2\""));
+  }
+
+  @Test
+  public void testComplexNesting() throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
+    Reader parquetReader = new ParquetReader(file);
+    List<String> records = parquetReader.getRecords(10);
+    assertEquals(6, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(firstRecord.contains("btnzlrfptk"));
   }
 }

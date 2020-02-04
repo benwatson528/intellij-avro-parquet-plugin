@@ -23,6 +23,47 @@ public class LocalInputFile implements InputFile {
     this.input = new RandomAccessFile(path.toFile(), "r");
   }
 
+  private static int readDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
+      throws IOException {
+    // copy all the bytes that return immediately, stopping at the first
+    // read that doesn't return a full buffer.
+    int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
+    int totalBytesRead = 0;
+    int bytesRead;
+
+    while ((bytesRead = rdr.read(tmpBuf, 0, nextReadLength)) == tmpBuf.length) {
+      byteBufr.put(tmpBuf);
+      totalBytesRead += bytesRead;
+      nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
+    }
+
+    if (bytesRead < 0) {
+      // return -1 if nothing was read
+      return totalBytesRead == 0 ? -1 : totalBytesRead;
+    } else {
+      // copy the last partial buffer
+      byteBufr.put(tmpBuf, 0, bytesRead);
+      totalBytesRead += bytesRead;
+      return totalBytesRead;
+    }
+  }
+
+  private static void readFullyDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
+      throws IOException {
+    int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
+    int bytesRead = 0;
+
+    while (nextReadLength > 0 && (bytesRead = rdr.read(tmpBuf, 0, nextReadLength)) >= 0) {
+      byteBufr.put(tmpBuf, 0, bytesRead);
+      nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
+    }
+
+    if (bytesRead < 0 && byteBufr.remaining() > 0) {
+      throw new EOFException(
+          "Reached the end of stream with " + byteBufr.remaining() + " bytes left to read");
+    }
+  }
+
   @Override
   public long getLength() throws IOException {
     return input.length();
@@ -131,46 +172,5 @@ public class LocalInputFile implements InputFile {
   private interface ByteBufReader {
 
     int read(byte[] b, int off, int len) throws IOException;
-  }
-
-  private static int readDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
-      throws IOException {
-    // copy all the bytes that return immediately, stopping at the first
-    // read that doesn't return a full buffer.
-    int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
-    int totalBytesRead = 0;
-    int bytesRead;
-
-    while ((bytesRead = rdr.read(tmpBuf, 0, nextReadLength)) == tmpBuf.length) {
-      byteBufr.put(tmpBuf);
-      totalBytesRead += bytesRead;
-      nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
-    }
-
-    if (bytesRead < 0) {
-      // return -1 if nothing was read
-      return totalBytesRead == 0 ? -1 : totalBytesRead;
-    } else {
-      // copy the last partial buffer
-      byteBufr.put(tmpBuf, 0, bytesRead);
-      totalBytesRead += bytesRead;
-      return totalBytesRead;
-    }
-  }
-
-  private static void readFullyDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
-      throws IOException {
-    int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
-    int bytesRead = 0;
-
-    while (nextReadLength > 0 && (bytesRead = rdr.read(tmpBuf, 0, nextReadLength)) >= 0) {
-      byteBufr.put(tmpBuf, 0, bytesRead);
-      nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
-    }
-
-    if (bytesRead < 0 && byteBufr.remaining() > 0) {
-      throw new EOFException(
-          "Reached the end of stream with " + byteBufr.remaining() + " bytes left to read");
-    }
   }
 }

@@ -45,7 +45,7 @@ public class ParquetReader implements Reader {
           columnIO.getRecordReader(pages, new GroupRecordConverter(this.schema));
       for (int j = 0; j < rows; j++) {
         final Group group = recordReader.read();
-        records.add(convertParquetGroupToJsonString(group));
+        records.add(convertParquetGroupToJsonString(group).toString());
         totalNumRecordsRead++;
         if (totalNumRecordsRead >= numRecords) {
           LOGGER.info(String.format("Retrieved %d records", totalNumRecordsRead));
@@ -63,7 +63,7 @@ public class ParquetReader implements Reader {
    * @param group the Parquet Group (analogous to a row in any other file)
    * @return the JSONObject representing the record
    */
-  private String convertParquetGroupToJsonString(final Group group) throws IOException {
+  private JSONObject convertParquetGroupToJsonString(final Group group) throws IOException {
     JSONObject jsonObject = new JSONObject();
 
     int fieldCount = group.getType().getFieldCount();
@@ -89,6 +89,6 @@ public class ParquetReader implements Reader {
       }
     }
 
-    return jsonObject.toString();
+    return jsonObject;
   }
 }
