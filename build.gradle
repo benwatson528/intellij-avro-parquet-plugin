@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.16'
-  //  id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
 group 'uk.co.hadoopathome.intellij.viewer'
@@ -21,17 +20,11 @@ dependencies {
     }
     compile("org.xerial.snappy:snappy-java:1.1.7.3")
 
-    //Parquet dependencies (yes, it really needs this many just to read a file...)
-//    compile("org.apache.parquet:parquet-common:1.11.0")
-//    compile("org.apache.parquet:parquet-encoding:1.11.0")
-//    compile("org.apache.parquet:parquet-column:1.11.0")
-//    compile("org.apache.parquet:parquet-hadoop:1.11.0")
-    compile("org.apache.hadoop:hadoop-client:2.7.3") {
-        exclude group: 'xerces'
+    //Parquet dependencies
+    compile("org.apache.parquet:parquet-avro:1.10.0") {
+        exclude group: 'it.unimi.dsi'
     }
-//    compile("org.apache.hadoop:hadoop-core:1.2.1")
-//    compile("org.apache.hadoop:hadoop-hdfs-client:3.2.1")
-//    compile("org.apache.hadoop:hadoop-hdfs:3.2.1")
+    compile("org.apache.hadoop:hadoop-common:3.2.1")
 
     //External dependencies
     compile("com.google.code.gson:gson:2.8.5")
@@ -47,19 +40,3 @@ patchPluginXml {
     changeNotes """
       Building with older IntelliJ versions"""
 }
-//
-//shadowJar {
-//    mergeServiceFiles()
-//    classifier = null
-//}
-
-//task deleteFiles(type: Delete) {
-//    delete fileTree('build/libs/') {
-//        exclude '**/intellij-*.jar'
-//        include '**/*.jar'
-//    }
-//}
-
-//jar.enabled = true
-//compileJava.finalizedBy(shadowJar)
-//patchPluginXml.finalizedBy(deleteFiles)

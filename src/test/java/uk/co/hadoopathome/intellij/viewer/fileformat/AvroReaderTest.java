@@ -26,6 +26,16 @@ public class AvroReaderTest {
   public void testGetRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroReader(file);
+    List<String> records = avroReader.getRecords(1);
+    assertEquals(1, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(firstRecord.contains("Nerf paper"));
+  }
+
+  @Test
+  public void testGetAllRecords() throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
+    Reader avroReader = new AvroReader(file);
     List<String> records = avroReader.getRecords(100);
     assertEquals(2, records.size());
     String firstRecord = records.get(0);

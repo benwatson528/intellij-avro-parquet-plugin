@@ -42,7 +42,7 @@ import uk.co.hadoopathome.intellij.viewer.table.JTableHandler;
 public class FileViewerToolWindow implements ToolWindowFactory {
   private static final Logger LOGGER = Logger.getInstance(FileViewerToolWindow.class);
   private static final String ALL = "All";
-  private static final String STARTUP_MESSAGE = "Drag and drop a valid .avro file here";
+  private static final String STARTUP_MESSAGE = "Drag and drop a valid .avro or .parquet file here";
   private final JTableHandler tableHandler;
   private JPanel toolWindowContent;
   private JTabbedPane tabbedPane;
