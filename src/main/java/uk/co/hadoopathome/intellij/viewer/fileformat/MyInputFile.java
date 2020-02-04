@@ -11,12 +11,14 @@ import java.nio.ByteBuffer;
 import java.nio.file.Path;
 
 /**
- * Taken from https://github.com/tideworks/arvo2parquet/blob/master/src/main/java/com/tideworks/data_load/io/InputFile.java
+ * Taken from
+ * https://github.com/tideworks/arvo2parquet/blob/master/src/main/java/com/tideworks/data_load/io/InputFile.java
  */
 public final class MyInputFile {
   private static final int COPY_BUFFER_SIZE = 8192;
 
-  public static org.apache.parquet.io.InputFile nioPathToInputFile(@Nonnull Path file) throws FileNotFoundException {
+  public static org.apache.parquet.io.InputFile nioPathToInputFile(@Nonnull Path file)
+      throws FileNotFoundException {
     //noinspection ConstantConditions
     assert file != null;
 
@@ -135,7 +137,8 @@ public final class MyInputFile {
     int read(byte[] b, int off, int len) throws IOException;
   }
 
-  private static int readDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr) throws IOException {
+  private static int readDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
+      throws IOException {
     // copy all the bytes that return immediately, stopping at the first
     // read that doesn't return a full buffer.
     int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
@@ -159,7 +162,8 @@ public final class MyInputFile {
     }
   }
 
-  private static void readFullyDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr) throws IOException {
+  private static void readFullyDirectBuffer(ByteBuffer byteBufr, byte[] tmpBuf, ByteBufReader rdr)
+      throws IOException {
     int nextReadLength = Math.min(byteBufr.remaining(), tmpBuf.length);
     int bytesRead = 0;
 
@@ -169,7 +173,8 @@ public final class MyInputFile {
     }
 
     if (bytesRead < 0 && byteBufr.remaining() > 0) {
-      throw new EOFException("Reached the end of stream with " + byteBufr.remaining() + " bytes left to read");
+      throw new EOFException(
+          "Reached the end of stream with " + byteBufr.remaining() + " bytes left to read");
     }
   }
 }
