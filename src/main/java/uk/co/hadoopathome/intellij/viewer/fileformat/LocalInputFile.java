@@ -72,7 +72,7 @@ public class LocalInputFile implements InputFile {
         input.close();
       }
 
-      @SuppressWarnings({ "unchecked", "unused", "UnusedReturnValue" })
+      @SuppressWarnings({"unchecked", "unused", "UnusedReturnValue"})
       private <T extends Throwable, R> R uncheckedExceptionThrow(Throwable t) throws T {
         throw (T) t;
       }
