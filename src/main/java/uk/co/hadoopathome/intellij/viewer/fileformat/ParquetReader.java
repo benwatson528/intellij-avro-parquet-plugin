@@ -24,7 +24,7 @@ public class ParquetReader implements Reader {
   private final MessageType schema;
 
   public ParquetReader(File file) throws IOException {
-    this.reader = ParquetFileReader.open(MyInputFile.nioPathToInputFile(file.toPath()));
+    this.reader = ParquetFileReader.open(new LocalInputFile(file.toPath()));
 
     this.schema = this.reader.getFileMetaData().getSchema();
   }
