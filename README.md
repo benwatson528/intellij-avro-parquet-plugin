@@ -41,7 +41,8 @@ IntelliJ next to `Run`, `Debug`, `Version Control` etc.).
 
 ## Improvements/New Features
 
-Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-plugin/issues).
+Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls) or
+[Issue](https://github.com/benwatson528/intellij-avro-parquet-plugin/issues).
 
 
 ## Releasing/Building Locally

@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>uk.co.hadoopathome.intellij.viewer.intellijavroviewer</id>
+    <id>uk.co.hadoopathome.intellij.avro.intellijavroviewer</id>
     <name>Avro and Parquet Viewer</name>
     <description>A Tool Window for viewing Avro and Parquet files and their schemas</description>
     <version>1.1.0</version>
