@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.fileformat;
+package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import com.intellij.openapi.diagnostic.Logger;
 import java.io.File;

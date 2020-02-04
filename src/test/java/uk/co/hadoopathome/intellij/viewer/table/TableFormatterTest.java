@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.table;
+package uk.co.hadoopathome.intellij.viewer.table;
 
 import static org.junit.Assert.assertEquals;
 

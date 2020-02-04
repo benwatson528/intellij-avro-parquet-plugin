@@ -1,4 +1,4 @@
-package uk.co.hadoopathome.intellij.avro.fileformat;
+package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,10 +9,10 @@ import java.util.List;
 import org.junit.Test;
 
 public class AvroReaderTest {
-  private static final String TWITTER_AVRO_FILE = "twitter.avro";
+  private static final String TWITTER_AVRO_FILE = "avro/twitter.avro";
   // https://github.com/apache/incubator-gobblin/blob/master/gobblin-core/src/test/resources/converter/pickfields_nested_with_union.avro
-  private static final String COMPLEX_AVRO_FILE = "pickfields_nested_with_union.avro";
-  private static final String INVALID_AVRO_FILE = "invalid.avro";
+  private static final String COMPLEX_AVRO_FILE = "avro/pickfields_nested_with_union.avro";
+  private static final String INVALID_AVRO_FILE = "avro/invalid.avro";
 
   @Test
   public void testGetSchema() throws IOException {
@@ -24,6 +24,16 @@ public class AvroReaderTest {
 
   @Test
   public void testGetRecords() throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
+    Reader avroReader = new AvroReader(file);
+    List<String> records = avroReader.getRecords(1);
+    assertEquals(1, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(firstRecord.contains("Nerf paper"));
+  }
+
+  @Test
+  public void testGetAllRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroReader(file);
     List<String> records = avroReader.getRecords(100);
