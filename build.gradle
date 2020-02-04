@@ -19,15 +19,15 @@ dependencies {
         exclude group: 'org.slf4j'
     }
     compile("org.xerial.snappy:snappy-java:1.1.7.3")
-    compile("com.google.code.gson:gson:2.8.5")
-    compile("com.fifesoft:rsyntaxtextarea:3.0.3")
-    compile("com.github.wnameless:json-flattener:0.6.0")
 
     //Parquet dependencies
     compile("org.apache.parquet:parquet-avro:1.10.0")
-    compile("org.apache.hadoop:hadoop-common:3.1.0")
-    compile("org.apache.hadoop:hadoop-main:3.1.0")
-    compile("org.apache.hadoop:hadoop-hdfs:3.1.0")
+    compile("org.apache.hadoop:hadoop-client:3.2.1")
+
+    //External dependencies
+    compile("com.google.code.gson:gson:2.8.5")
+    compile("com.fifesoft:rsyntaxtextarea:3.0.3")
+    compile("com.github.wnameless:json-flattener:0.6.0")
 
     //Test dependencies
     testCompile("junit:junit:4.12")

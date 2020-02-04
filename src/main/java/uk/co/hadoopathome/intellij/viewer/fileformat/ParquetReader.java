@@ -25,7 +25,6 @@ public class ParquetReader implements Reader {
 
   public ParquetReader(File file) throws IOException {
     this.reader = ParquetFileReader.open(new LocalInputFile(file.toPath()));
-
     this.schema = this.reader.getFileMetaData().getSchema();
   }
 
@@ -36,7 +35,6 @@ public class ParquetReader implements Reader {
 
   @Override
   public List<String> getRecords(int numRecords) throws IOException {
-
     int totalNumRecordsRead = 0;
     PageReadStore pages;
     List<String> records = new ArrayList<>();
