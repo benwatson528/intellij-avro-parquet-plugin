@@ -16,7 +16,7 @@ Features include:
 
 ## Installing
 
-Available on [the IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
+Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
 Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, it will appear as a Tool Window
 (normally at the bottom of IntelliJ next to `Run`, `Debug`, `Version Control` etc.).
 
@@ -24,6 +24,24 @@ Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, i
 ## Demo
 
 ![](images/demo.gif)
+
+
+## Images
+
+
+##### Table view:
+
+![table view](images/table-view.png "Table view")
+
+
+##### Raw view:
+
+![raw view](images/raw-view.png "Raw view")
+
+
+##### Schema view:
+
+![schema view](images/schema-view.png "Schema view")
 
 
 ## Improvements/New Features
