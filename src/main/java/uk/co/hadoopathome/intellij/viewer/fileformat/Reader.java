@@ -7,5 +7,5 @@ public interface Reader {
 
   List<String> getRecords(int numRecords) throws IOException;
 
-  String getSchema();
+  String getSchema() throws IOException;
 }

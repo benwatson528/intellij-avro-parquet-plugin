@@ -34,8 +34,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import uk.co.hadoopathome.intellij.viewer.fileformat.AvroReader;
-import uk.co.hadoopathome.intellij.viewer.fileformat.ParquetReader;
+import uk.co.hadoopathome.intellij.viewer.fileformat.AvroFileReader;
+import uk.co.hadoopathome.intellij.viewer.fileformat.ParquetFileReader;
 import uk.co.hadoopathome.intellij.viewer.fileformat.Reader;
 import uk.co.hadoopathome.intellij.viewer.table.JTableHandler;
 
@@ -168,8 +168,8 @@ public class FileViewerToolWindow implements ToolWindowFactory {
             try {
               Reader reader =
                   currentFile.getName().endsWith("avro")
-                      ? new AvroReader(currentFile)
-                      : new ParquetReader(currentFile);
+                      ? new AvroFileReader(currentFile)
+                      : new ParquetFileReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
               tableHandler.updateTable(records);
               dataRawTextArea.setText(StringUtils.join(records, "\n"));
@@ -177,13 +177,13 @@ public class FileViewerToolWindow implements ToolWindowFactory {
               fileInfoLabel.setText(
                   String.format("Displaying %d records from %s", records.size(), file.getPath()));
               return true;
-            } catch (OutOfMemoryError | IOException e) {
+            } catch (Throwable t) {
               JOptionPane.showMessageDialog(
                   new JFrame(),
-                  "Unable to process file, see IDEA logs for more information",
+                  "Unable to process file, see IDEA logs for more information.\n\nError: " + t.getMessage(),
                   "Error",
                   JOptionPane.ERROR_MESSAGE);
-              LOGGER.warn("Unable to process file", e);
+              LOGGER.error("Unable to process file", t);
               schemaTextPane.setText(STARTUP_MESSAGE);
               return false;
             }
