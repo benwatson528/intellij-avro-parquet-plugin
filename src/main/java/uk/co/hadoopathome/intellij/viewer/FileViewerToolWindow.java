@@ -180,7 +180,8 @@ public class FileViewerToolWindow implements ToolWindowFactory {
             } catch (Throwable t) {
               JOptionPane.showMessageDialog(
                   new JFrame(),
-                  "Unable to process file, see IDEA logs for more information.\n\nError: " + t.getMessage(),
+                  "Unable to process file, see IDEA logs for more information.\n\nError: "
+                      + t.getMessage(),
                   "Error",
                   JOptionPane.ERROR_MESSAGE);
               LOGGER.error("Unable to process file", t);
