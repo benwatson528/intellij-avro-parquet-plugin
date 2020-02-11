@@ -10,11 +10,11 @@ import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 
-public class AvroReader implements Reader {
-  private static final Logger LOGGER = Logger.getInstance(AvroReader.class);
+public class AvroFileReader implements Reader {
+  private static final Logger LOGGER = Logger.getInstance(AvroFileReader.class);
   private DataFileReader<GenericRecord> dataFileReader;
 
-  public AvroReader(File file) throws OutOfMemoryError, IOException {
+  public AvroFileReader(File file) throws OutOfMemoryError, IOException {
     DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
     this.dataFileReader = new DataFileReader<>(file, datumReader);
   }

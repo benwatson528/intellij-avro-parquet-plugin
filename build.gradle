@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'uk.co.hadoopathome.intellij.viewer'
-version '1.1.0'
+version '1.1.1'
 
 repositories {
     mavenCentral()
@@ -21,10 +21,10 @@ dependencies {
     compile("org.xerial.snappy:snappy-java:1.1.7.3")
 
     //Parquet dependencies
-    compile("org.apache.parquet:parquet-avro:1.10.0") {
+    compile("org.apache.parquet:parquet-avro:1.11.0") {
         exclude group: 'it.unimi.dsi'
     }
-    compile("org.apache.hadoop:hadoop-common:3.2.1")
+    compile("org.apache.hadoop:hadoop-client:3.2.1")
 
     //External dependencies
     compile("com.google.code.gson:gson:2.8.5")
@@ -38,5 +38,5 @@ dependencies {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      Building with older IntelliJ versions"""
+      Changing Parquet to use AvroParquetReader to reduce Parquet read errors"""
 }
