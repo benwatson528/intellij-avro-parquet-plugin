@@ -21,22 +21,9 @@ Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, i
 (normally at the bottom of IntelliJ next to `Run`, `Debug`, `Version Control` etc.).
 
 
-## Images
+## Demo
 
-
-##### Table view:
-
-![table view](images/table-view.png "Table view")
-
-
-##### Raw view:
-
-![raw view](images/raw-view.png "Raw view")
-
-
-##### Schema view:
-
-![schema view](images/schema-view.png "Schema view")
+![](images/demo.gif)
 
 
 ## Improvements/New Features
