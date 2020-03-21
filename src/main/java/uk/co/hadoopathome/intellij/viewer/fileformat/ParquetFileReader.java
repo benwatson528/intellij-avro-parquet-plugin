@@ -11,6 +11,7 @@ import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
 
 public class ParquetFileReader implements Reader {
+
   private static final Logger LOGGER = Logger.getInstance(ParquetFileReader.class);
   private final Path path;
 
