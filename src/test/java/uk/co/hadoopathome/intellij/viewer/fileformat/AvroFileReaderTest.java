@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AvroFileReaderTest {
+
   private static final String TWITTER_AVRO_FILE = "avro/twitter.avro";
   // https://github.com/apache/incubator-gobblin/blob/master/gobblin-core/src/test/resources/converter/pickfields_nested_with_union.avro
   private static final String COMPLEX_AVRO_FILE = "avro/pickfields_nested_with_union.avro";

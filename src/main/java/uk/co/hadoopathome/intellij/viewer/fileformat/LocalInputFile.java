@@ -16,7 +16,6 @@ import org.apache.parquet.io.SeekableInputStream;
 public class LocalInputFile implements InputFile {
 
   private static final int COPY_BUFFER_SIZE = 8192;
-
   private final RandomAccessFile input;
 
   public LocalInputFile(Path path) throws FileNotFoundException {

@@ -89,11 +89,15 @@ public class FileViewerToolWindow implements ToolWindowFactory {
           File file =
               ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor))
                   .get(0);
-          String path = file.getPath();
-          if (!path.endsWith(".avro") && !path.endsWith(".parquet")) {
-            JOptionPane.showMessageDialog(null, "Must be a .avro or .parquet file");
+          String fileName = file.getName().toLowerCase();
+          if (!fileName.contains("avro") && !fileName.contains("parquet")) {
+            JOptionPane.showMessageDialog(
+                null,
+                String.format(
+                    "File name \"%s\" must contain either \"avro\" or \"parquet\"", fileName));
             return;
           }
+          String path = file.getPath();
           schemaTextPane.setText(String.format("Processing file %s", path));
           LOGGER.info(String.format("Received file %s", path));
           populatePanes(file, convertComboBoxValueToInt(numRecordsComboBox.getSelectedItem()));
@@ -167,7 +171,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
             schemaTextPane.setText(String.format("Processing file %s", file.getPath()));
             try {
               Reader reader =
-                  currentFile.getName().endsWith("avro")
+                  currentFile.getName().toLowerCase().contains("avro")
                       ? new AvroFileReader(currentFile)
                       : new ParquetFileReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
