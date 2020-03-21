@@ -15,7 +15,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     //Avro dependencies
-    compile("org.apache.avro:avro:1.9.1") {
+    compile("org.apache.avro:avro:1.9.2") {
         exclude group: 'org.slf4j'
     }
     compile("org.xerial.snappy:snappy-java:1.1.7.3")
@@ -27,12 +27,19 @@ dependencies {
     compile("org.apache.hadoop:hadoop-client:3.2.1")
 
     //External dependencies
-    compile("com.google.code.gson:gson:2.8.5")
-    compile("com.fifesoft:rsyntaxtextarea:3.0.3")
-    compile("com.github.wnameless:json-flattener:0.6.0")
+    compile("com.google.code.gson:gson:2.8.6")
+    compile("com.fifesoft:rsyntaxtextarea:3.1.0")
+    compile("com.github.wnameless.json:json-flattener:0.8.1")
 
     //Test dependencies
-    testCompile("junit:junit:4.12")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 patchPluginXml {

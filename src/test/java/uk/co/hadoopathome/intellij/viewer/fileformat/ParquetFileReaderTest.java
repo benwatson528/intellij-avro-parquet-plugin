@@ -2,11 +2,13 @@ package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class ParquetFileReaderTest {
 
@@ -18,6 +20,7 @@ public class ParquetFileReaderTest {
   private static final String INVALID_PARQUET_FILE = "parquet/invalid.parquet";
 
   @Test
+  @DisplayName("Assert that a schema can be extracted from a Parquet file")
   public void testGetSchema() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
@@ -26,6 +29,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that one record can be extracted from a Parquet file")
   public void testGetRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
@@ -38,6 +42,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that all records can be extracted from a Parquet file")
   public void testGetAllRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
@@ -50,6 +55,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that a Parquet file with complex nesting is correctly parsed")
   public void testList() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(LIST_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
@@ -59,10 +65,11 @@ public class ParquetFileReaderTest {
     assertTrue(firstRecord.contains("[{\"element\": 42}, {\"element\": 47}, {\"element\": 139}]"));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
+  @DisplayName("Assert that an invalid Parquet file throws an exception")
   public void testInvalidFile() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(INVALID_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
-    parquetReader.getRecords(10);
+    assertThrows(IllegalArgumentException.class, () -> parquetReader.getRecords(10));
   }
 }
