@@ -45,6 +45,6 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      Loosening file validation to allow any file whose name contains `parquet` or `avro`. This means that
+      Loosening file validation to support any file whose name contains `parquet` or `avro`. This means that
       `.parquet.snappy` and `.avro.snappy` files are now supported."""
 }
