@@ -2,11 +2,13 @@ package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class AvroFileReaderTest {
   private static final String TWITTER_AVRO_FILE = "avro/twitter.avro";
@@ -15,6 +17,7 @@ public class AvroFileReaderTest {
   private static final String INVALID_AVRO_FILE = "avro/invalid.avro";
 
   @Test
+  @DisplayName("Assert that a schema can be extracted from an Avro file")
   public void testGetSchema() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroFileReader(file);
@@ -23,6 +26,7 @@ public class AvroFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that one record can be extracted from an Avro file")
   public void testGetRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroFileReader(file);
@@ -33,6 +37,7 @@ public class AvroFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that all records can be extracted from an Avro file")
   public void testGetAllRecords() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroFileReader(file);
@@ -43,6 +48,7 @@ public class AvroFileReaderTest {
   }
 
   @Test
+  @DisplayName("Assert that an Avro file with complex nesting is correctly parsed")
   public void testComplexNesting() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(COMPLEX_AVRO_FILE).getFile());
     Reader avroReader = new AvroFileReader(file);
@@ -52,9 +58,10 @@ public class AvroFileReaderTest {
     assertTrue(firstRecord.contains("btnzlrfptk"));
   }
 
-  @Test(expected = OutOfMemoryError.class)
-  public void testInvalidFile() throws IOException {
+  @Test
+  @DisplayName("Assert that an invalid Avro file throws an exception")
+  public void testInvalidFile() {
     File file = new File(getClass().getClassLoader().getResource(INVALID_AVRO_FILE).getFile());
-    new AvroFileReader(file);
+    assertThrows(OutOfMemoryError.class, () -> new AvroFileReader(file));
   }
 }
