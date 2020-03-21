@@ -171,7 +171,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
             schemaTextPane.setText(String.format("Processing file %s", file.getPath()));
             try {
               Reader reader =
-                  currentFile.getName().contains("avro")
+                  currentFile.getName().toLowerCase().contains("avro")
                       ? new AvroFileReader(currentFile)
                       : new ParquetFileReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
