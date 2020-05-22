@@ -33,36 +33,22 @@ class TableFormatter {
    */
   String[][] getRows() {
     String[][] rows = new String[this.flattenedRecords.size()][this.columns.length];
-    JsonObject flattenedRecordCopy = null;
-    String colCopy = null;
-    JsonElement valueCopy = null;
-    try {
-      for (int i = 0; i < this.flattenedRecords.size(); i++) {
-        JsonObject flattenedRecord = this.flattenedRecords.get(i);
-        flattenedRecordCopy = flattenedRecord;
-        String[] values = new String[this.columns.length];
-        for (int j = 0; j < this.columns.length; j++) {
-          String column = this.columns[j];
-          colCopy = column;
-          if (flattenedRecord.has(column)) {
-            JsonElement value = flattenedRecord.get(column);
-            valueCopy = value;
-            if (value != null
-                && !value.isJsonNull()
-                && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
-                && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
-              values[j] = value.getAsString();
-            }
+    for (int i = 0; i < this.flattenedRecords.size(); i++) {
+      JsonObject flattenedRecord = this.flattenedRecords.get(i);
+      String[] values = new String[this.columns.length];
+      for (int j = 0; j < this.columns.length; j++) {
+        String column = this.columns[j];
+        if (flattenedRecord.has(column)) {
+          JsonElement value = flattenedRecord.get(column);
+          if (value != null
+              && !value.isJsonNull()
+              && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
+              && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
+            values[j] = value.getAsString();
           }
         }
-        rows[i] = values;
       }
-    } catch (Exception e) {
-      LOGGER.error(
-          String.format(
-              "Caught JsonObject issue for row [%s], value [%s] and col [%s]",
-              flattenedRecordCopy, valueCopy, colCopy));
-      throw e;
+      rows[i] = values;
     }
     return rows;
   }
