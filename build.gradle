@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'uk.co.hadoopathome.intellij.viewer'
-version '1.1.2'
+version '1.1.3'
 
 repositories {
     mavenCentral()
@@ -45,6 +45,5 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      Loosening file validation to support any file whose name contains `parquet` or `avro`. This means that
-      `.parquet.snappy` and `.avro.snappy` files are now supported."""
+      Adding support for datasets which contain empty nested JsonObjects."""
 }
