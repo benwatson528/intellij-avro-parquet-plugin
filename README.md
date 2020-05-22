@@ -2,6 +2,8 @@
 
 ## Overview
 
+![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg)
+
 A Tool Window plugin for IntelliJ that displays Avro `.avro` and Parquet `.parquet` files in human-readable JSON format.
 
 Features include:
