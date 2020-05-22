@@ -48,8 +48,7 @@ class TableFormatter {
           } else {
             LOGGER.warn(
                 String.format(
-                    "Unable to display invalid cell for flattened record [%s] and column [%s]",
-                    flattenedRecord, column));
+                    "Unable to display invalid cell for column: %s with value: %s", column, value));
           }
         }
       }
