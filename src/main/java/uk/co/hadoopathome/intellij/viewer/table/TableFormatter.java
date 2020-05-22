@@ -14,13 +14,13 @@ import java.util.TreeSet;
 class TableFormatter {
   private static final Logger LOGGER = Logger.getInstance(TableFormatter.class);
   private final List<JsonObject> flattenedRecords;
-  private String[] columns;
+  private final String[] columns;
 
   TableFormatter(List<String> rawRecords) {
     this.flattenedRecords = new ArrayList<>();
     for (String rawRecord : rawRecords) {
       String flatten = JsonFlattener.flatten(rawRecord);
-      JsonObject jsonObject = new JsonParser().parse(flatten).getAsJsonObject();
+      JsonObject jsonObject = JsonParser.parseString(flatten).getAsJsonObject();
       this.flattenedRecords.add(jsonObject);
     }
     this.columns = constructAllColumns();
@@ -33,19 +33,36 @@ class TableFormatter {
    */
   String[][] getRows() {
     String[][] rows = new String[this.flattenedRecords.size()][this.columns.length];
-    for (int i = 0; i < this.flattenedRecords.size(); i++) {
-      JsonObject flattenedRecord = this.flattenedRecords.get(i);
-      String[] values = new String[this.columns.length];
-      for (int j = 0; j < this.columns.length; j++) {
-        String column = this.columns[j];
-        if (flattenedRecord.has(column)) {
-          JsonElement value = flattenedRecord.get(column);
-          if (!value.isJsonNull() && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
-            values[j] = flattenedRecord.get(column).getAsString();
+    JsonObject flattenedRecordCopy = null;
+    String colCopy = null;
+    JsonElement valueCopy = null;
+    try {
+      for (int i = 0; i < this.flattenedRecords.size(); i++) {
+        JsonObject flattenedRecord = this.flattenedRecords.get(i);
+        flattenedRecordCopy = flattenedRecord;
+        String[] values = new String[this.columns.length];
+        for (int j = 0; j < this.columns.length; j++) {
+          String column = this.columns[j];
+          colCopy = column;
+          if (flattenedRecord.has(column)) {
+            JsonElement value = flattenedRecord.get(column);
+            valueCopy = value;
+            if (value != null
+                && !value.isJsonNull()
+                && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
+                && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
+              values[j] = value.getAsString();
+            }
           }
         }
+        rows[i] = values;
       }
-      rows[i] = values;
+    } catch (Exception e) {
+      LOGGER.error(
+          String.format(
+              "Caught JsonObject issue for row [%s], value [%s] and col [%s]",
+              flattenedRecordCopy, valueCopy, colCopy));
+      throw e;
     }
     return rows;
   }
