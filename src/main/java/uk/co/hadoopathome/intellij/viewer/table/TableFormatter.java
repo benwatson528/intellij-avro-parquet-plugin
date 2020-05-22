@@ -45,6 +45,11 @@ class TableFormatter {
               && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
               && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
             values[j] = value.getAsString();
+          } else {
+            LOGGER.warn(
+                String.format(
+                    "Unable to display invalid cell for flattened record [%s] and column [%s]",
+                    flattenedRecord, column));
           }
         }
       }
