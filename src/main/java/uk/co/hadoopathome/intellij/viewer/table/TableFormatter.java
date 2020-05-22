@@ -14,13 +14,13 @@ import java.util.TreeSet;
 class TableFormatter {
   private static final Logger LOGGER = Logger.getInstance(TableFormatter.class);
   private final List<JsonObject> flattenedRecords;
-  private String[] columns;
+  private final String[] columns;
 
   TableFormatter(List<String> rawRecords) {
     this.flattenedRecords = new ArrayList<>();
     for (String rawRecord : rawRecords) {
       String flatten = JsonFlattener.flatten(rawRecord);
-      JsonObject jsonObject = new JsonParser().parse(flatten).getAsJsonObject();
+      JsonObject jsonObject = JsonParser.parseString(flatten).getAsJsonObject();
       this.flattenedRecords.add(jsonObject);
     }
     this.columns = constructAllColumns();
@@ -40,8 +40,15 @@ class TableFormatter {
         String column = this.columns[j];
         if (flattenedRecord.has(column)) {
           JsonElement value = flattenedRecord.get(column);
-          if (!value.isJsonNull() && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
-            values[j] = flattenedRecord.get(column).getAsString();
+          if (value != null
+              && !value.isJsonNull()
+              && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
+              && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
+            values[j] = value.getAsString();
+          } else {
+            LOGGER.warn(
+                String.format(
+                    "Unable to display invalid cell for column: %s with value: %s", column, value));
           }
         }
       }
