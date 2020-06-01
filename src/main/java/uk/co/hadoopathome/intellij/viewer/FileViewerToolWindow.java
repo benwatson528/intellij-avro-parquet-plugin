@@ -181,7 +181,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
               tableHandler.updateTable(records);
               dataRawTextArea.setText(StringUtils.join(records, "\n"));
               schemaTextPane.setText(reader.getSchema());
-              String recordPlural = records.size() > 1 ? "s" : "";
+              String recordPlural = records.size() == 1 ? "" : "s";
               fileInfoLabel.setText(
                   String.format(
                       "Displaying %d record%s from %s",
