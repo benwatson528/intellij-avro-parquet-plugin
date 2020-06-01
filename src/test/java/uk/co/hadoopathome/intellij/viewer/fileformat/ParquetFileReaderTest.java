@@ -38,7 +38,8 @@ public class ParquetFileReaderTest {
     String firstRecord = records.get(0);
     assertTrue(
         firstRecord.contains(
-            "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\": 1026040670}"));
+            "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\":"
+                + " 1026040670}"));
   }
 
   @Test
@@ -51,7 +52,8 @@ public class ParquetFileReaderTest {
     String firstRecord = records.get(0);
     assertTrue(
         firstRecord.contains(
-            "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\": 1026040670}"));
+            "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\":"
+                + " 1026040670}"));
   }
 
   @Test

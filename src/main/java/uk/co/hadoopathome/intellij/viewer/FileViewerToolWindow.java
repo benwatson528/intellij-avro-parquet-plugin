@@ -180,9 +180,9 @@ public class FileViewerToolWindow implements ToolWindowFactory {
               schemaTextPane.setText(reader.getSchema());
               String recordPlural = records.size() > 1 ? "s" : "";
               fileInfoLabel.setText(
-                      String.format(
-                              "Displaying %d record%s from %s",
-                              records.size(), recordPlural, file.getPath()));
+                  String.format(
+                      "Displaying %d record%s from %s",
+                      records.size(), recordPlural, file.getPath()));
               return true;
             } catch (Throwable t) {
               JOptionPane.showMessageDialog(
