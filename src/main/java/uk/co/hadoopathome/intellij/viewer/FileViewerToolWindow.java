@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,6 +63,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
   private JComboBox numRecordsComboBox;
   private JPanel fileInfoPanel;
   private JLabel fileInfoLabel;
+  private JScrollPane fieldInfoScrollPane;
   private File currentFile;
 
   /** Creates the IntelliJ Tool Window. */
@@ -71,6 +73,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
     this.dataRawTextArea.setDropTarget(createDropTarget());
     this.schemaTextPane.setDropTarget(createDropTarget());
     this.tableHandler = new JTableHandler(this.dataTable);
+    fieldInfoScrollPane.setBorder(BorderFactory.createEmptyBorder());
     createDataPaneRadioButtonListeners();
     createComboBoxListener();
   }
@@ -178,8 +181,11 @@ public class FileViewerToolWindow implements ToolWindowFactory {
               tableHandler.updateTable(records);
               dataRawTextArea.setText(StringUtils.join(records, "\n"));
               schemaTextPane.setText(reader.getSchema());
+              String recordPlural = records.size() == 1 ? "" : "s";
               fileInfoLabel.setText(
-                  String.format("Displaying %d records from %s", records.size(), file.getPath()));
+                  String.format(
+                      "Displaying %d record%s from %s",
+                      records.size(), recordPlural, file.getPath()));
               return true;
             } catch (Throwable t) {
               JOptionPane.showMessageDialog(
