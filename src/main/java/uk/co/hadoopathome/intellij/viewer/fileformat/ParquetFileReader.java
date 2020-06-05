@@ -33,11 +33,11 @@ public class ParquetFileReader implements Reader {
   @Override
   public List<String> getRecords(int numRecords) throws IOException, IllegalArgumentException {
     List<String> records = new ArrayList<>();
-    try (ParquetReader<Object> pReader =
+    try (ParquetReader<Object> parquetReader =
         AvroParquetReader.builder(new LocalInputFile(this.path)).build()) {
       GenericData.Record value;
       for (int i = 0; i < numRecords; i++) {
-        value = (GenericData.Record) pReader.read();
+        value = (GenericData.Record) parquetReader.read();
         if (value == null) {
           LOGGER.info(String.format("Retrieved %d records", records.size()));
           return records;
