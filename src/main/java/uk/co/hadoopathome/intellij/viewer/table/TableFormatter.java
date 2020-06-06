@@ -45,12 +45,6 @@ class TableFormatter {
               && !(value.isJsonObject() && value.getAsJsonObject().size() == 0)
               && !(value.isJsonArray() && value.getAsJsonArray().size() == 0)) {
             values[j] = value.getAsString();
-          } else {
-            if (value != null) {
-              LOGGER.warn(
-                  String.format(
-                      "Unable to display cell for column: %s with value: %s", column, value));
-            }
           }
         }
       }
