@@ -2,7 +2,6 @@ package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +16,7 @@ public class ParquetFileReaderTest {
   private static final String NESTED_PARQUET_FILE = "parquet/nested.parquet";
   private static final String LIST_PARQUET_FILE = "parquet/list.parquet";
   // https://github.com/Teradata/kylo/blob/master/samples/sample-data/parquet/userdata1.parquet
-  private static final String INVALID_PARQUET_FILE = "parquet/invalid.parquet";
+  private static final String INVALID_PARQUET_FILE = "parquet/int96_column.parquet";
 
   @Test
   @DisplayName("Assert that a schema can be extracted from a Parquet file")
@@ -68,10 +67,13 @@ public class ParquetFileReaderTest {
   }
 
   @Test
-  @DisplayName("Assert that an invalid Parquet file throws an exception")
+  @DisplayName("Assert that a Parquet file with an INT96 column can still be displayed")
   public void testInvalidFile() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(INVALID_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
-    assertThrows(IllegalArgumentException.class, () -> parquetReader.getRecords(10));
+    List<String> records = parquetReader.getRecords(10);
+    assertEquals(10, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(firstRecord.contains("\"first_name\": \"Amanda\", \"last_name\": \"Jordan\""));
   }
 }
