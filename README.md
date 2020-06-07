@@ -14,7 +14,7 @@ Features include:
  - Flattening of nested records in table view ([json-flattener](https://github.com/wnameless/json-flattener))
  - Configurable number of records to display
  - Automatic support for IntelliJ's light and Darcula themes
- - Compatible with all IntelliJ-based products (such as PyCharm and Android Studio)
+ - Compatible with all IntelliJ-based products (including PyCharm and Android Studio)
 
 
 ## Installing
