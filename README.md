@@ -2,7 +2,7 @@
 
 ## Overview
 
-![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg)
+![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg) ![IntelliJ Downloads](https://img.shields.io/jetbrains/plugin/d/12281-avro-and-parquet-viewer)
 
 A Tool Window plugin for IntelliJ that displays Avro and Parquet files and their schemas in JSON.
 
