@@ -4,7 +4,7 @@
 
 ![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg)
 
-A Tool Window plugin for IntelliJ (and other JetBrains products such as PyCharm and Android Studio) that displays Avro `.avro` and Parquet `.parquet` files in human-readable JSON format.
+A Tool Window plugin for IntelliJ (and other JetBrains products such as PyCharm and Android Studio) that displays Avro and Parquet files in human-readable JSON format.
 
 Features include:
  - Foldable schema viewing ([RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea))
@@ -13,14 +13,12 @@ Features include:
  - Automatic flattening of nested records in table view ([json-flattener](https://github.com/wnameless/json-flattener))
  - Configurable number of records to show
  - Simple drag-and-drop interface
- - Automatic support for IntelliJ's default and Darcula themes
+ - Automatic support for IntelliJ's light and Darcula themes
 
 
 ## Installing
 
-Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
-Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, it will appear as a Tool Window
-(normally at the bottom of IntelliJ next to `Run`, `Debug`, `Version Control` etc.).
+Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer). Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, it will appear as a Tool Window (normally at the bottom of IntelliJ next to `Run`, `Debug`, `Version Control` etc.).
 
 
 ## Demo
@@ -48,8 +46,7 @@ Search "Avro and Parquet Viewer" in IntelliJ's Plugins window. Once installed, i
 
 ## Improvements/New Features
 
-Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls) or
-[Issue](https://github.com/benwatson528/intellij-avro-parquet-plugin/issues).
+Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-parquet-plugin/issues).
 
 
 ## Releasing/Building Locally
