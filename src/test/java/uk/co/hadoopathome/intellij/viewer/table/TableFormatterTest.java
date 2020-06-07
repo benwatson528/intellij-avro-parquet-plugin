@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TableFormatterTest {
-
   @Test
   @DisplayName("Assert that JSON records can be correctly extracted and formatted")
   public void testFormatTable() {
