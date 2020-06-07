@@ -85,7 +85,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
    */
   private DropTarget createDropTarget() {
     return new DropTarget() {
-      public void drop(DropTargetDropEvent evt) {
+      public synchronized void drop(DropTargetDropEvent evt) {
         try {
           tabbedPane.setSelectedIndex(0);
           evt.acceptDrop(DnDConstants.ACTION_COPY);
