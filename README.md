@@ -4,16 +4,17 @@
 
 ![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg)
 
-A Tool Window plugin for IntelliJ (and other JetBrains products such as PyCharm and Android Studio) that displays Avro and Parquet files in human-readable JSON format.
+A Tool Window plugin for IntelliJ that displays Avro and Parquet files in human-readable JSON format.
 
 Features include:
- - Foldable schema viewing ([RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea))
- - Tablulated or raw viewing of records
- - Column sorting in table view
- - Automatic flattening of nested records in table view ([json-flattener](https://github.com/wnameless/json-flattener))
- - Configurable number of records to show
  - Simple drag-and-drop interface
+ - Tablulated and JSON viewing of records
+ - Column sorting in table view
+ - Foldable schema viewing ([RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea))
+ - Flattening of nested records in table view ([json-flattener](https://github.com/wnameless/json-flattener))
+ - Configurable number of records to display
  - Automatic support for IntelliJ's light and Darcula themes
+ - Compatible with all IntelliJ-based products (such as PyCharm and Android Studio)
 
 
 ## Installing
@@ -26,8 +27,7 @@ Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 ![](images/demo.gif)
 
 
-## Images
-
+## Gallery
 
 ##### Table view:
 
@@ -44,17 +44,17 @@ Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 ![schema view](images/schema-view.png "Schema view")
 
 
-## Improvements/New Features
+## Bug Reports, Feature Requests and Contributions
 
 Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls) or [Issue](https://github.com/benwatson528/intellij-avro-parquet-plugin/issues).
 
 
-## Releasing/Building Locally
+## Building Locally
 
-This project can be build locally and manually imported to IntelliJ. To do this:
+This project can be built locally and manually installed in IntelliJ. To do this:
 
 1. Build the project with `gradlew clean build`.
-2. Take the jar in `build/distributions` and navigate to `Settings` -> `Plugins` -> `Install Plugin From Disk...`.
+2. Navigate to `Settings` -> `Plugins` -> `Install Plugin From Disk...` and point to the zip in `build/distributions`.
 
 
 ## License
