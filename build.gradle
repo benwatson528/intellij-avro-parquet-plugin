@@ -23,6 +23,9 @@ dependencies {
     //Parquet dependencies
     //This is org.apache.parquet:parquet-avro-1.11.0 with added support for INT96
     compile files("libs/parquet-avro-1.12.0-SNAPSHOT.jar")
+    compile("org.apache.parquet:parquet-column:1.11.0")
+    compile("org.apache.parquet:parquet-hadoop:1.11.0")
+    compile("org.apache.parquet:parquet-format-structures:1.11.0")
     compile("org.apache.hadoop:hadoop-client:3.2.1")
 
     //External dependencies
