@@ -16,14 +16,12 @@ jobs:
           fetch-depth: 0
 
       - name: Set trimmed tag name
-        id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/v}
 
       - name: Build project
         run: ./gradlew buildPlugin
 
       - name: Create GitHub Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +32,6 @@ jobs:
           prerelease: false
 
       - name: Publish to Release Assets
-        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +48,6 @@ jobs:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Increment release version
-        id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.1
         with:
           current-version: ${{ steps.vars.outputs.tag }}
