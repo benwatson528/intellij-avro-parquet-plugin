@@ -18,7 +18,8 @@ public class AvroFileReader implements Reader {
   private final DataFileReader<GenericRecord> dataFileReader;
 
   public AvroFileReader(File file) throws OutOfMemoryError, IOException {
-    GenericData genericData = addLogicalTypes();
+    GenericData genericData = GenericData.get();
+    genericData = addLogicalTypes(genericData);
     GenericDatumReader<GenericRecord> datumReader =
         new GenericDatumReader<>(null, null, genericData);
     this.dataFileReader = new DataFileReader<>(file, datumReader);
@@ -41,11 +42,12 @@ public class AvroFileReader implements Reader {
     return records;
   }
 
-  private GenericData addLogicalTypes() {
-    GenericData genericData = GenericData.get();
+  private GenericData addLogicalTypes(GenericData genericData) {
     genericData.addLogicalTypeConversion(new Conversions.DecimalConversion());
     genericData.addLogicalTypeConversion(new Conversions.UUIDConversion());
     genericData.addLogicalTypeConversion(new TimeConversions.TimeMicrosConversion());
+    genericData.addLogicalTypeConversion(new TimeConversions.TimeMillisConversion());
+    genericData.addLogicalTypeConversion(new TimeConversions.TimestampMicrosConversion());
     genericData.addLogicalTypeConversion(new TimeConversions.TimestampMillisConversion());
     return genericData;
   }
