@@ -55,7 +55,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/benwatson528/intellij-avro-parquet-plugin")
             credentials {
                 username = System.getenv("USERNAME")
-                password = System.getenv("PASSWORD")
+                password = System.getenv("TOKEN")
             }
         }
     }
