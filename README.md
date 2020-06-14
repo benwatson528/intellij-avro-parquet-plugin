@@ -66,7 +66,7 @@ To release a new version of the plugin:
 1. Create a `release/x.y.z` branch,
 2. Update the `changeNotes` in `build.gradle`,
 3. Merge the branch into `master`,
-4. Create and push a tag (where `x.y.z` is the current project version) in:
+4. Create and push a tag (where `x.y.z` is the current project version):
    ```
    git tag -a vx.y.z -m "Create release tag vx.y.z"
    git push origin --tags
