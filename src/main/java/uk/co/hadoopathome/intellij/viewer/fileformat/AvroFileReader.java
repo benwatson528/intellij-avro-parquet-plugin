@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.avro.Conversions;
-import org.apache.avro.data.TimeConversions;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
@@ -18,8 +16,7 @@ public class AvroFileReader implements Reader {
   private final DataFileReader<GenericRecord> dataFileReader;
 
   public AvroFileReader(File file) throws OutOfMemoryError, IOException {
-    GenericData genericData = GenericData.get();
-    genericData = addLogicalTypes(genericData);
+    GenericData genericData = GenericDataCreator.createGenericData();
     GenericDatumReader<GenericRecord> datumReader =
         new GenericDatumReader<>(null, null, genericData);
     this.dataFileReader = new DataFileReader<>(file, datumReader);
@@ -40,15 +37,5 @@ public class AvroFileReader implements Reader {
     }
     LOGGER.info(String.format("Retrieved %d records", i));
     return records;
-  }
-
-  private GenericData addLogicalTypes(GenericData genericData) {
-    genericData.addLogicalTypeConversion(new Conversions.DecimalConversion());
-    genericData.addLogicalTypeConversion(new Conversions.UUIDConversion());
-    genericData.addLogicalTypeConversion(new TimeConversions.TimeMicrosConversion());
-    genericData.addLogicalTypeConversion(new TimeConversions.TimeMillisConversion());
-    genericData.addLogicalTypeConversion(new TimeConversions.TimestampMicrosConversion());
-    genericData.addLogicalTypeConversion(new TimeConversions.TimestampMillisConversion());
-    return genericData;
   }
 }
