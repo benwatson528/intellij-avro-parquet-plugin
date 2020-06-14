@@ -21,9 +21,9 @@ public class ParquetFileReader implements Reader {
 
   @Override
   public String getSchema() throws IOException {
-    ParquetReader<Object> pReader =
+    ParquetReader<Object> parquetReader =
         AvroParquetReader.builder(new LocalInputFile(this.path)).build();
-    GenericData.Record firstRecord = (GenericData.Record) pReader.read();
+    GenericData.Record firstRecord = (GenericData.Record) parquetReader.read();
     if (firstRecord == null) {
       throw new IOException("Can't process empty Parquet file");
     }

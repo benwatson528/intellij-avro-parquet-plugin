@@ -15,6 +15,7 @@ public class AvroFileReaderTest {
   private static final String TWITTER_AVRO_FILE = "avro/twitter.avro";
   // https://github.com/apache/incubator-gobblin/blob/master/gobblin-core/src/test/resources/converter/pickfields_nested_with_union.avro
   private static final String COMPLEX_AVRO_FILE = "avro/pickfields_nested_with_union.avro";
+  private static final String DECIMAL_LOGICAL_TYPE = "avro/decimal_logical_type.avro";
   private static final String INVALID_AVRO_FILE = "avro/invalid.avro";
 
   @Test
@@ -57,6 +58,18 @@ public class AvroFileReaderTest {
     assertEquals(6, records.size());
     String firstRecord = records.get(0);
     assertTrue(firstRecord.contains("btnzlrfptk"));
+  }
+
+  @Test
+  @DisplayName("Assert that an Avro file with a decimal LogicalType is correctly parsed")
+  public void testLogicalType() throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(DECIMAL_LOGICAL_TYPE).getFile());
+    Reader avroReader = new AvroFileReader(file);
+    List<String> records = avroReader.getRecords(100);
+    assertEquals(1, records.size());
+    String firstRecord = records.get(0);
+    assertTrue(
+        firstRecord.contains("25.190000"));
   }
 
   @Test

@@ -5,18 +5,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.avro.Conversions;
+import org.apache.avro.data.TimeConversions;
 import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.FileReader;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
+import org.jetbrains.annotations.NotNull;
 
 public class AvroFileReader implements Reader {
 
   private static final Logger LOGGER = Logger.getInstance(AvroFileReader.class);
-  private DataFileReader<GenericRecord> dataFileReader;
+  private final DataFileReader<GenericRecord> dataFileReader;
 
   public AvroFileReader(File file) throws OutOfMemoryError, IOException {
-    DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
+    GenericData genericData = addLogicalTypes();
+    GenericDatumReader<GenericRecord> datumReader =
+        new GenericDatumReader<>(null, null, genericData);
     this.dataFileReader = new DataFileReader<>(file, datumReader);
   }
 
@@ -35,5 +42,14 @@ public class AvroFileReader implements Reader {
     }
     LOGGER.info(String.format("Retrieved %d records", i));
     return records;
+  }
+
+  private GenericData addLogicalTypes() {
+    GenericData genericData = GenericData.get();
+    genericData.addLogicalTypeConversion(new Conversions.DecimalConversion());
+    genericData.addLogicalTypeConversion(new Conversions.UUIDConversion());
+    genericData.addLogicalTypeConversion(new TimeConversions.TimeMicrosConversion());
+    genericData.addLogicalTypeConversion(new TimeConversions.TimestampMillisConversion());
+    return genericData;
   }
 }
