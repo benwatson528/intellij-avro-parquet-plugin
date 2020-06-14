@@ -55,7 +55,7 @@ Raise a [PR](https://github.com/benwatson528/intellij-avro-parquet-plugin/pulls)
 
 This project can be built locally and manually installed in IntelliJ. To do this:
 
-1. Build the project with `gradlew clean build`.
+1. Build the project with `gradlew buildPlugin`,
 2. Navigate to `Settings -> Plugins -> Install Plugin From Disk...` and point to the zip in `build/distributions`.
 
 
