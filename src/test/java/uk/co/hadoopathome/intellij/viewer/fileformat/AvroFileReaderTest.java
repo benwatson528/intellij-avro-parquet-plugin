@@ -68,8 +68,7 @@ public class AvroFileReaderTest {
     List<String> records = avroReader.getRecords(100);
     assertEquals(1, records.size());
     String firstRecord = records.get(0);
-    assertTrue(
-        firstRecord.contains("25.190000"));
+    assertTrue(firstRecord.contains("25.190000"));
   }
 
   @Test
