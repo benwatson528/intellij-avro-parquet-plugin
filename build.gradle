@@ -45,7 +45,7 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      Parquet files containing INT96 fields can now be processed, although the INT96 column will be displayed as bytes."""
+      LogicalTypes are now correctly displayed: Decimal, UUID, TimeMicros, TimeMillis, TimestampMicros, TimestampMillis."""
 }
 
 publishing {
