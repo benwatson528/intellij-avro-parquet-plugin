@@ -1,0 +1,74 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set trimmed tag name
+        id: trim_tag
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/v}
+
+      - name: Build project
+        run: ./gradlew buildPlugin
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Publish to Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/distributions/intellij-avro-parquet-plugin-${{ steps.trim_tag.outputs.tag }}.zip
+          asset_name: intellij-avro-parquet-plugin-${{ steps.trim_tag.outputs.tag }}.zip
+          asset_content_type: application/zip
+
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Increment release version
+        id: increment_version
+        uses: christian-draeger/increment-semantic-version@1.0.1
+        with:
+          current-version: ${{ steps.trim_tag.outputs.tag }}
+          version-fragment: 'feature'
+
+      - name: Update version in project files
+        run: |
+          echo "Updating version to ${{ steps.increment_version.outputs.next-version }}"
+          sed -i 's/${{ steps.trim_tag.outputs.tag }}/${{ steps.increment_version.outputs.next-version }}/g' ./gradle.properties
+          sed -i 's/${{ steps.trim_tag.outputs.tag }}/${{ steps.increment_version.outputs.next-version }}/g' ./src/main/resources/META-INF/plugin.xml
+
+      - name: Commit modified files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Updating version" -a
+
+      - name: Push modified files
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
