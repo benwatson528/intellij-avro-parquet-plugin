@@ -62,14 +62,13 @@ public class AvroFileReaderTest {
 
   @Test
   @DisplayName("Assert that an Avro file with a decimal LogicalType is correctly parsed")
-  public void testLogicalType() throws IOException {
+  public void testDecimalLogicalType() throws IOException {
     File file = new File(getClass().getClassLoader().getResource(DECIMAL_LOGICAL_TYPE).getFile());
     Reader avroReader = new AvroFileReader(file);
     List<String> records = avroReader.getRecords(100);
     assertEquals(1, records.size());
     String firstRecord = records.get(0);
-    assertTrue(
-        firstRecord.contains("25.190000"));
+    assertTrue(firstRecord.contains("25.190000"));
   }
 
   @Test
