@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.avro.file.DataFileReader;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.DatumReader;
 
 public class AvroFileReader implements Reader {
 
   private static final Logger LOGGER = Logger.getInstance(AvroFileReader.class);
-  private DataFileReader<GenericRecord> dataFileReader;
+  private final DataFileReader<GenericRecord> dataFileReader;
 
   public AvroFileReader(File file) throws OutOfMemoryError, IOException {
-    DatumReader<GenericRecord> datumReader = new GenericDatumReader<>();
+    GenericData genericData = GenericDataCreator.createGenericData();
+    GenericDatumReader<GenericRecord> datumReader =
+        new GenericDatumReader<>(null, null, genericData);
     this.dataFileReader = new DataFileReader<>(file, datumReader);
   }
 

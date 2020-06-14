@@ -14,16 +14,18 @@ public class ParquetFileReader implements Reader {
 
   private static final Logger LOGGER = Logger.getInstance(ParquetFileReader.class);
   private final Path path;
+  private final GenericData genericData;
 
   public ParquetFileReader(File file) {
     this.path = file.toPath();
+    this.genericData = GenericDataCreator.createGenericData();
   }
 
   @Override
   public String getSchema() throws IOException {
-    ParquetReader<Object> pReader =
+    ParquetReader<Object> parquetReader =
         AvroParquetReader.builder(new LocalInputFile(this.path)).build();
-    GenericData.Record firstRecord = (GenericData.Record) pReader.read();
+    GenericData.Record firstRecord = (GenericData.Record) parquetReader.read();
     if (firstRecord == null) {
       throw new IOException("Can't process empty Parquet file");
     }
@@ -34,7 +36,9 @@ public class ParquetFileReader implements Reader {
   public List<String> getRecords(int numRecords) throws IOException, IllegalArgumentException {
     List<String> records = new ArrayList<>();
     try (ParquetReader<Object> parquetReader =
-        AvroParquetReader.builder(new LocalInputFile(this.path)).build()) {
+        AvroParquetReader.builder(new LocalInputFile(this.path))
+            .withDataModel(this.genericData)
+            .build()) {
       GenericData.Record value;
       for (int i = 0; i < numRecords; i++) {
         value = (GenericData.Record) parquetReader.read();
