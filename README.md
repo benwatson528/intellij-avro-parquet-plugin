@@ -37,11 +37,9 @@ Available on the [IntelliJ Plugin Marketplace](https://plugins.jetbrains.com/plu
 
 ![table view](images/table-view.png "Table view")
 
-
 ##### Raw view:
 
 ![raw view](images/raw-view.png "Raw view")
-
 
 ##### Schema view:
 
@@ -73,12 +71,11 @@ To release a new version of the plugin:
    git tag -a vx.y.z -m "Create release tag vx.y.z"
    git push origin --tags
    ```
-5. The "Create Release" GitHub Action will automatically run and do the following:
+5. When the tag is pushed, the "Create Release" GitHub Action will automatically run and do the following:
    1. Create a Release in GitHub,
-   2. Build and upload the plugin zip to both the GitHub Release and GitHub Packages,
+   2. Build and upload the plugin zip to both the [GitHub Release](https://github.com/benwatson528/intellij-avro-parquet-plugin/releases) and [GitHub Packages](https://github.com/benwatson528/intellij-avro-parquet-plugin/packages),
    3. Increment the project version and commit the new version to `gradle.properties` and `plugin.xml` in `master`.
-
-The plugin zip must still be manually uploaded to the IntelliJ marketplace.
+6. Upload the zip to the [IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
 
 
 ## License
