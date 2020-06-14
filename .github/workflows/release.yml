@@ -39,8 +39,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/distributions/intellij-avro-parquet-plugin-${{ steps.trim_tag.outputs.tag }}.zip
-          asset_name: intellij-avro-parquet-plugin-${{ steps.trim_tag.outputs.tag }}.zip
+          asset_path: ./build/distributions/intellij-avro-parquet-viewer-${{ steps.trim_tag.outputs.tag }}.zip
+          asset_name: intellij-avro-parquet-viewer-${{ steps.trim_tag.outputs.tag }}.zip
           asset_content_type: application/zip
 
       - name: Publish to GitHub Packages
