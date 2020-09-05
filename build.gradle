@@ -46,7 +46,7 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      LogicalTypes are now correctly displayed: Decimal, UUID, TimeMicros, TimeMillis, TimestampMicros, TimestampMillis."""
+      Some LogicalTypes are not written as valid JSON. This update ensures that such values can still be viewed in the raw pane, while disabling the table pane."""
 }
 
 publishing {
