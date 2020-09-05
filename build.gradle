@@ -46,7 +46,7 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      LogicalTypes are now correctly displayed: Decimal, UUID, TimeMicros, TimeMillis, TimestampMicros, TimestampMillis."""
+      Some LogicalTypes (such as dates) are not written as valid JSON, which was causing some files to not be displayed at all. This update ensures that such files can still be viewed in the raw pane."""
 }
 
 publishing {
