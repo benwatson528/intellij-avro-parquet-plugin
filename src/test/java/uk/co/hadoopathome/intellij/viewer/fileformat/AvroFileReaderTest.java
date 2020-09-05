@@ -1,7 +1,6 @@
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
@@ -24,51 +23,43 @@ public class AvroFileReaderTest {
     File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
     Reader avroReader = new AvroFileReader(file);
     String schema = avroReader.getSchema();
-    assertTrue(schema.contains("A basic schema for storing Twitter messages"));
+    assertThat(schema).contains("A basic schema for storing Twitter messages");
   }
 
   @Test
   @DisplayName("Assert that one record can be extracted from an Avro file")
   public void testGetRecords() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
-    Reader avroReader = new AvroFileReader(file);
-    List<String> records = avroReader.getRecords(1);
-    assertEquals(1, records.size());
+    List<String> records = readRecords(TWITTER_AVRO_FILE, 1);
+    assertThat(records).hasSize(1);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("Nerf paper"));
+    assertThat(firstRecord).contains("Nerf paper");
   }
 
   @Test
   @DisplayName("Assert that all records can be extracted from an Avro file")
   public void testGetAllRecords() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(TWITTER_AVRO_FILE).getFile());
-    Reader avroReader = new AvroFileReader(file);
-    List<String> records = avroReader.getRecords(100);
-    assertEquals(2, records.size());
+    List<String> records = readRecords(TWITTER_AVRO_FILE, 100);
+    assertThat(records).hasSize(2);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("Nerf paper"));
+    assertThat(firstRecord).contains("Nerf paper");
   }
 
   @Test
   @DisplayName("Assert that an Avro file with complex nesting is correctly parsed")
   public void testComplexNesting() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(COMPLEX_AVRO_FILE).getFile());
-    Reader avroReader = new AvroFileReader(file);
-    List<String> records = avroReader.getRecords(100);
-    assertEquals(6, records.size());
+    List<String> records = readRecords(COMPLEX_AVRO_FILE, 100);
+    assertThat(records).hasSize(6);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("btnzlrfptk"));
+    assertThat(firstRecord).contains("btnzlrfptk");
   }
 
   @Test
   @DisplayName("Assert that an Avro file with a decimal LogicalType is correctly parsed")
   public void testDecimalLogicalType() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(DECIMAL_LOGICAL_TYPE).getFile());
-    Reader avroReader = new AvroFileReader(file);
-    List<String> records = avroReader.getRecords(100);
-    assertEquals(1, records.size());
+    List<String> records = readRecords(DECIMAL_LOGICAL_TYPE, 100);
+    assertThat(records).hasSize(1);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("25.190000"));
+    assertThat(firstRecord).contains("25.190000");
   }
 
   @Test
@@ -76,5 +67,11 @@ public class AvroFileReaderTest {
   public void testInvalidFile() {
     File file = new File(getClass().getClassLoader().getResource(INVALID_AVRO_FILE).getFile());
     assertThrows(OutOfMemoryError.class, () -> new AvroFileReader(file));
+  }
+
+  private List<String> readRecords(String fileName, int numRecords) throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
+    Reader avroReader = new AvroFileReader(file);
+    return avroReader.getRecords(numRecords);
   }
 }

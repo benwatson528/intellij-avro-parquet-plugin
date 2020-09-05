@@ -1,5 +1,6 @@
 package uk.co.hadoopathome.intellij.viewer.table;
 
+import com.intellij.openapi.diagnostic.Logger;
 import java.awt.Component;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
@@ -10,9 +11,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import org.apache.commons.lang3.ArrayUtils;
 
 /** Manages the JTable. */
 public class JTableHandler {
+  private static final Logger LOGGER = Logger.getInstance(JTableHandler.class);
   private final JTable table;
 
   public JTableHandler(JTable table) {
@@ -23,16 +26,23 @@ public class JTableHandler {
    * Updates the contents of the JTable.
    *
    * @param records the raw JSON records to be added to the table
+   * @return true if the table was successfully updated with data, else false
    */
-  public void updateTable(List<String> records) {
+  public boolean updateTable(List<String> records) {
     TableFormatter tableFormatter = new TableFormatter(records);
     String[] columns = tableFormatter.getColumns();
     String[][] rows = tableFormatter.getRows();
     disableTableEditing();
 
+    if (ArrayUtils.isEmpty(columns)) {
+      LOGGER.warn("Unable to display data in table");
+      return false;
+    }
+
     TableModel tableModel = new DefaultTableModel(rows, columns);
     this.table.setModel(tableModel);
     resizeTableColumns();
+    return true;
   }
 
   /** Ensures that cells in the table can be copied but not modified. */

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.apache.commons.lang.ArrayUtils;
 
 /** Takes the JSON records and places them into the format expected by JTable. */
 class TableFormatter {
@@ -16,11 +17,29 @@ class TableFormatter {
   private final List<JsonObject> flattenedRecords;
   private final String[] columns;
 
+  /**
+   * Converts the raw records into flattened JSON and extracts all columns from the records.
+   * LogicalTypes may not always be correctly formatted in JSON, and so JSON parsing exceptions are
+   * caught so that they can be correctly handled.
+   *
+   * @param rawRecords the raw Avro or Parquet records in nested JSON format
+   */
   TableFormatter(List<String> rawRecords) {
     this.flattenedRecords = new ArrayList<>();
     for (String rawRecord : rawRecords) {
-      String flatten = JsonFlattener.flatten(rawRecord);
-      JsonObject jsonObject = JsonParser.parseString(flatten).getAsJsonObject();
+      JsonObject jsonObject;
+      try {
+        String flatten = JsonFlattener.flatten(rawRecord);
+        jsonObject = JsonParser.parseString(flatten).getAsJsonObject();
+      } catch (Exception e) {
+        LOGGER.warn(
+            String.format(
+                "Unable to parse record into JSON; no formatted records will be available for this"
+                    + " file: %s",
+                rawRecord));
+        this.columns = ArrayUtils.EMPTY_STRING_ARRAY;
+        return;
+      }
       this.flattenedRecords.add(jsonObject);
     }
     this.columns = constructAllColumns();
@@ -59,7 +78,10 @@ class TableFormatter {
 
   /**
    * Get every (flattened) column from every record to be displayed. This is required for the table
-   * view.
+   * view. This results in columns being stored in alphabetical order rather than their input order.
+   *
+   * <p>Columns can't simply be extracted from the schema as we don't know which columns are present
+   * in the flattened subset of records being displayed until we have flattened them.
    *
    * @return a Set of all possible columns
    */

@@ -73,7 +73,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
     this.dataRawTextArea.setDropTarget(createDropTarget());
     this.schemaTextPane.setDropTarget(createDropTarget());
     this.tableHandler = new JTableHandler(this.dataTable);
-    fieldInfoScrollPane.setBorder(BorderFactory.createEmptyBorder());
+    this.fieldInfoScrollPane.setBorder(BorderFactory.createEmptyBorder());
     createDataPaneRadioButtonListeners();
     createComboBoxListener();
   }
@@ -171,15 +171,14 @@ public class FileViewerToolWindow implements ToolWindowFactory {
         new SwingWorker() {
           @Override
           protected Boolean doInBackground() {
-            schemaTextPane.setText(String.format("Processing file %s", file.getPath()));
+            schemaTextPane.setText(String.format("Processing file %s...", file.getPath()));
             try {
               Reader reader =
                   currentFile.getName().toLowerCase().contains("avro")
                       ? new AvroFileReader(currentFile)
                       : new ParquetFileReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
-              tableHandler.updateTable(records);
-              dataRawTextArea.setText(StringUtils.join(records, "\n"));
+              configureDataPanes(records);
               schemaTextPane.setText(reader.getSchema());
               String recordPlural = records.size() == 1 ? "" : "s";
               fileInfoLabel.setText(
@@ -194,13 +193,35 @@ public class FileViewerToolWindow implements ToolWindowFactory {
                       + t.getMessage(),
                   "Error",
                   JOptionPane.ERROR_MESSAGE);
-              LOGGER.error("Unable to process file", t);
+              LOGGER.error(String.format("Unable to process file %s", file), t);
               schemaTextPane.setText(STARTUP_MESSAGE);
               return false;
             }
           }
         };
     swingWorker.execute();
+  }
+
+  /**
+   * Populates the raw and table data panes with records and configures the radio buttons. If
+   * invalid JSON is found, the table pane is disabled and no data is loaded into it.
+   *
+   * @param records the records to be displayed
+   */
+  private void configureDataPanes(List<String> records) {
+    dataRawTextArea.setText(StringUtils.join(records, "\n"));
+    boolean tableUpdated = tableHandler.updateTable(records);
+    if (!tableUpdated) {
+      tableRadioButton.setToolTipText("Table view not available due to invalid JSON records");
+      CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
+      cardLayout.show(dataCardLayout, "dataRawCard");
+    } else {
+      CardLayout cardLayout = (CardLayout) dataCardLayout.getLayout();
+      cardLayout.show(dataCardLayout, "dataTableCard");
+    }
+    tableRadioButton.setEnabled(tableUpdated);
+    tableRadioButton.setSelected(tableUpdated);
+    rawRadioButton.setSelected(!tableUpdated);
   }
 
   private void createDataPaneRadioButtonListeners() {
