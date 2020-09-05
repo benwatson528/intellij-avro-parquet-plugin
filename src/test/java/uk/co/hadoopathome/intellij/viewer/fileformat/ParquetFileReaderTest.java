@@ -1,7 +1,6 @@
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +16,7 @@ public class ParquetFileReaderTest {
   private static final String LIST_PARQUET_FILE = "parquet/list.parquet";
   // https://github.com/Teradata/kylo/blob/master/samples/sample-data/parquet/userdata1.parquet
   private static final String INVALID_PARQUET_FILE = "parquet/int96_column.parquet";
+  private static final String LOGICAL_DATE_PARQUET_FILE = "parquet/logical_date.parquet";
 
   @Test
   @DisplayName("Assert that a schema can be extracted from a Parquet file")
@@ -24,56 +24,64 @@ public class ParquetFileReaderTest {
     File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
     Reader parquetReader = new ParquetFileReader(file);
     String schema = parquetReader.getSchema();
-    assertTrue(schema.contains("\"type\" : [ \"int\", \"null\" ]"));
+    assertThat(schema).contains("\"type\" : [ \"int\", \"null\" ]");
   }
 
   @Test
   @DisplayName("Assert that one record can be extracted from a Parquet file")
   public void testGetRecords() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    List<String> records = parquetReader.getRecords(10);
-    assertEquals(6, records.size());
+    List<String> records = readRecords(NESTED_PARQUET_FILE, 10);
+    assertThat(records).hasSize(6);
     String firstRecord = records.get(0);
-    assertTrue(
-        firstRecord.contains(
+    assertThat(firstRecord)
+        .contains(
             "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\":"
-                + " 1026040670}"));
+                + " 1026040670}");
   }
 
   @Test
   @DisplayName("Assert that all records can be extracted from a Parquet file")
   public void testGetAllRecords() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    List<String> records = parquetReader.getRecords(99999);
-    assertEquals(6, records.size());
+    List<String> records = readRecords(NESTED_PARQUET_FILE, 99999);
+    assertThat(records).hasSize(6);
     String firstRecord = records.get(0);
-    assertTrue(
-        firstRecord.contains(
+    assertThat(firstRecord)
+        .contains(
             "\"nested2_union\": {\"nested2_string\": \"yobzdadkgk\", \"nested2_int\":"
-                + " 1026040670}"));
+                + " 1026040670}");
   }
 
   @Test
   @DisplayName("Assert that a Parquet file with complex nesting is correctly parsed")
   public void testList() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(LIST_PARQUET_FILE).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    List<String> records = parquetReader.getRecords(10);
-    assertEquals(1, records.size());
+    List<String> records = readRecords(LIST_PARQUET_FILE, 10);
+    assertThat(records).hasSize(1);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("[{\"element\": 42}, {\"element\": 47}, {\"element\": 139}]"));
+    assertThat(firstRecord).contains("[{\"element\": 42}, {\"element\": 47}, {\"element\": 139}]");
   }
 
   @Test
   @DisplayName("Assert that a Parquet file with an INT96 column can still be displayed")
   public void testInvalidFile() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(INVALID_PARQUET_FILE).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    List<String> records = parquetReader.getRecords(10);
-    assertEquals(10, records.size());
+    List<String> records = readRecords(INVALID_PARQUET_FILE, 10);
+    assertThat(records).hasSize(10);
     String firstRecord = records.get(0);
-    assertTrue(firstRecord.contains("\"first_name\": \"Amanda\", \"last_name\": \"Jordan\""));
+    assertThat(firstRecord).contains("\"first_name\": \"Amanda\", \"last_name\": \"Jordan\"");
+  }
+
+  @Test
+  @DisplayName("Assert that a Parquet file with a LogicalType date column can still be displayed")
+  public void testDateLogicalType() throws IOException {
+    List<String> records = readRecords(LOGICAL_DATE_PARQUET_FILE, 10);
+    assertThat(records).hasSize(5);
+    String firstRecord = records.get(0);
+    assertThat(firstRecord)
+        .contains("{\"received_at\": 1970-01-19T12:02:37.304Z, \"name___string\": \"Tressa\"");
+  }
+
+  private List<String> readRecords(String fileName, int numRecords) throws IOException {
+    File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
+    Reader parquetReader = new ParquetFileReader(file);
+    return parquetReader.getRecords(numRecords);
   }
 }

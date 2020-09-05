@@ -46,3 +46,9 @@ gradle-app.setting
 
 # macOS
 .DS_STORE
+
+# Temporary dump files
+core.*
+heapdump.*
+javacore.*
+Snap.*
