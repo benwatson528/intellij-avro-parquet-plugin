@@ -19,8 +19,8 @@ class TableFormatter {
 
   /**
    * Converts the raw records into flattened JSON and extracts all columns from the records.
-   * LogicalTypes may not always be correctly formatted in JSON, and so JSON parsing
-   * exceptions are caught so that they can be correctly handled.
+   * LogicalTypes may not always be correctly formatted in JSON, and so JSON parsing exceptions are
+   * caught so that they can be correctly handled.
    *
    * @param rawRecords the raw Avro or Parquet records in nested JSON format
    */
@@ -34,7 +34,8 @@ class TableFormatter {
       } catch (Exception e) {
         LOGGER.warn(
             String.format(
-                "Unable to parse record into JSON; no formatted records will be available for this file: %s",
+                "Unable to parse record into JSON; no formatted records will be available for this"
+                    + " file: %s",
                 rawRecord));
         this.columns = ArrayUtils.EMPTY_STRING_ARRAY;
         return;
