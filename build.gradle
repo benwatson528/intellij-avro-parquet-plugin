@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id 'org.jetbrains.intellij' version '0.6.5'
     id 'maven-publish'
 }
 
@@ -8,32 +8,32 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 dependencies {
     //Avro dependencies
-    compile("org.apache.avro:avro:1.9.2") {
+    compile("org.apache.avro:avro:1.10.0") {
         exclude group: 'org.slf4j'
     }
-    compile("org.xerial.snappy:snappy-java:1.1.7.3")
+    compile("org.xerial.snappy:snappy-java:1.1.8.1")
 
     //Parquet dependencies
     //This is org.apache.parquet:parquet-avro-1.11.0 with added support for INT96
-    compile files("libs/parquet-avro-1.12.0-SNAPSHOT.jar")
-    compile("org.apache.parquet:parquet-column:1.11.0")
-    compile("org.apache.parquet:parquet-hadoop:1.11.0")
-    compile("org.apache.parquet:parquet-format-structures:1.11.0")
-    compile("org.apache.hadoop:hadoop-client:3.2.1")
+    compile files("libs/parquet-avro-1.11.1-SNAPSHOT.jar")
+    compile("org.apache.parquet:parquet-column:1.11.1")
+    compile("org.apache.parquet:parquet-hadoop:1.11.1")
+    compile("org.apache.parquet:parquet-format-structures:1.11.1")
+    compile("org.apache.hadoop:hadoop-client:3.3.0")
 
     //External dependencies
     compile("com.google.code.gson:gson:2.8.6")
-    compile("com.fifesoft:rsyntaxtextarea:3.1.0")
-    compile("com.github.wnameless.json:json-flattener:0.8.1")
+    compile("com.fifesoft:rsyntaxtextarea:3.1.1")
+    compile("com.github.wnameless.json:json-flattener:0.11.1")
 
     //Test dependencies
-    testCompile("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-    testCompile("org.assertj:assertj-core:3.17.1")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testCompile("org.assertj:assertj-core:3.18.1")
 }
 
 test {
@@ -46,7 +46,7 @@ test {
 patchPluginXml {
     sinceBuild("171")
     changeNotes """
-      Some LogicalTypes (such as dates) are not written as valid JSON, which was causing some files to not be displayed at all. This update ensures that such files can still be viewed in the raw pane."""
+      A general version spring clean. Java 1.11, Avro 1.10.0, Parquet 1.11.1, and several other minor bumps."""
 }
 
 publishing {
