@@ -44,10 +44,10 @@ test {
 }
 
 intellij {
-    version 'LATEST-EAP-SNAPSHOT'
-    pluginName 'Avro and Parquet Viewer'
-
+    updateSinceUntilBuild = false
     patchPluginXml {
+        sinceBuild("171")
+
         changeNotes """
       A general version spring clean. Java 1.11, Avro 1.10.0, Parquet 1.11.1, and several other minor bumps."""
     }
