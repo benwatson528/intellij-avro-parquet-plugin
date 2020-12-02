@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "org.jetbrains.intellij" version "0.6.5"
+    id 'org.jetbrains.intellij' version '0.6.5'
     id 'maven-publish'
 }
 
@@ -24,8 +24,8 @@ dependencies {
     compile("org.apache.parquet:parquet-column:1.11.1")
     compile("org.apache.parquet:parquet-hadoop:1.11.1")
     compile("org.apache.parquet:parquet-format-structures:1.11.1")
-    compile("org.apache.hadoop:hadoop-client:3.2.1")
     compile("com.github.luben:zstd-jni:1.4.5-12")
+    compile("org.apache.hadoop:hadoop-client:3.3.0")
 
     //External dependencies
     compile("com.google.code.gson:gson:2.8.6")
@@ -44,11 +44,17 @@ test {
     }
 }
 
-patchPluginXml {
-    sinceBuild("171")
-    changeNotes """
-      Adding support for zstd-formatted Python files, bumping Avro to 1.10.0 and Parquet to 1.11.1."""
+intellij {
+    updateSinceUntilBuild = false
+    patchPluginXml {
+        sinceBuild("171")
+
+        changeNotes """
+      A general version spring clean. Java 1.11, Avro 1.10.0, Parquet 1.11.1, and several other minor bumps."""
+    }
 }
+
+buildSearchableOptions.enabled = false
 
 publishing {
     repositories {

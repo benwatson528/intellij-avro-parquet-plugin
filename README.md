@@ -61,7 +61,7 @@ This project can be built locally and manually installed in IntelliJ. To do this
 
 To release a new version of the plugin:
 
-1. Create a `release/x.y.z` branch,
+1. Create a `release/x.y.z` branch (where the version corresponds to the version in `gradle.properties::version`,
 2. Update the `changeNotes` in `build.gradle`,
 3. Merge the branch into `master`,
 4. Create and push a tag (where `x.y.z` is the current project version):
