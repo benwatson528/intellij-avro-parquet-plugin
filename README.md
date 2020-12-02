@@ -2,8 +2,6 @@
 
 [![Java CI](https://github.com/benwatson528/intellij-avro-parquet-plugin/workflows/Java%20CI/badge.svg)](https://github.com/benwatson528/intellij-avro-parquet-plugin/actions?query=workflow%3A%22Java+CI%22)
 [![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/12281-avro-and-parquet-viewer)](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/benwatson528/intellij-avro-parquet-plugin.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/benwatson528/intellij-avro-parquet-plugin/alerts/)
-[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/benwatson528/intellij-avro-parquet-plugin.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/benwatson528/intellij-avro-parquet-plugin/context:java)
 
 
 ## Overview
