@@ -76,6 +76,13 @@ To release a new version of the plugin:
 6. Upload the zip to the [IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
 
 
+## Support
+
+[![jetbrains](images/jetbrains.svg "JetBrains")](https://www.jetbrains.com/?from=Intellij_Avro_Parquet_Viewer)
+
+This project is generously supported by JetBrains.
+
+
 ## License
 
 https://www.apache.org/licenses/LICENSE-2.0
