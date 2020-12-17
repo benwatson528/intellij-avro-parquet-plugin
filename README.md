@@ -82,6 +82,8 @@ To release a new version of the plugin:
 
 This project is generously supported by JetBrains.
 
+If the plugin has helped you and you wish to show your gratitude, please consider donating to the [Gateshead Foodbank](https://gateshead.foodbank.org.uk/), a charity that supports over 600 people per week in Gateshead, England.
+
 
 ## License
 
