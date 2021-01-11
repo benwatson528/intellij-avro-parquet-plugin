@@ -28,6 +28,7 @@ dependencies {
 
     //External dependencies
     compile("com.google.code.gson:gson:2.8.6")
+    compile("com.google.guava:guava:23.6-jre")
     compile("com.fifesoft:rsyntaxtextarea:3.1.1")
     compile("com.github.wnameless.json:json-flattener:0.11.1")
 
@@ -45,9 +46,9 @@ test {
 
 intellij {
     updateSinceUntilBuild = false
+    version '2017.1.6'
     patchPluginXml {
         sinceBuild("171")
-
         changeNotes """
       Reverting to Java 8 to ensure that as many people as possible can run the plugin."""
     }
