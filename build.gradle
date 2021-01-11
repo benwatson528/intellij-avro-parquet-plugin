@@ -8,8 +8,8 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     //Avro dependencies
@@ -49,7 +49,7 @@ intellij {
         sinceBuild("171")
 
         changeNotes """
-      A general version spring clean. Java 1.11, Avro 1.10.0, Parquet 1.11.1, and several other minor bumps."""
+      Reverting to Java 8 to ensure that as many people as possible can run the plugin."""
     }
 }
 
