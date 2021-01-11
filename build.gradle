@@ -50,7 +50,7 @@ intellij {
     patchPluginXml {
         sinceBuild("171")
         changeNotes """
-      Reverting to Java 8 to ensure that as many people as possible can run the plugin."""
+      Reverting to Java 8 to ensure compatibility with older Java."""
     }
 }
 
