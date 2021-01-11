@@ -45,7 +45,7 @@ test {
 
 intellij {
     updateSinceUntilBuild = false
-    version '171'
+    version '2017.1.6'
     patchPluginXml {
         sinceBuild("171")
         changeNotes """
