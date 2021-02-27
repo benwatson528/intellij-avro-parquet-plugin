@@ -14,31 +14,31 @@ public class ParquetFileReader implements Reader {
 
   private static final Logger LOGGER = Logger.getInstance(ParquetFileReader.class);
   private final Path path;
-  private final GenericData genericData;
 
   public ParquetFileReader(File file) {
     this.path = file.toPath();
-    this.genericData = GenericDataCreator.createGenericData();
+    GenericDataConfigurer.configureGenericData();
   }
 
   @Override
   public String getSchema() throws IOException {
-    ParquetReader<Object> parquetReader =
-        AvroParquetReader.builder(new LocalInputFile(this.path)).build();
-    GenericData.Record firstRecord = (GenericData.Record) parquetReader.read();
-    if (firstRecord == null) {
-      throw new IOException("Can't process empty Parquet file");
+    try (ParquetReader<Object> parquetReader =
+        AvroParquetReader.builder(new LocalInputFile(this.path)).build()) {
+      GenericData.Record firstRecord = (GenericData.Record) parquetReader.read();
+      if (firstRecord == null) {
+        throw new IOException("Can't process empty Parquet file");
+      }
+      return firstRecord.getSchema().toString(true);
     }
-    return firstRecord.getSchema().toString(true);
   }
 
   @Override
   public List<String> getRecords(int numRecords) throws IOException, IllegalArgumentException {
-    List<String> records = new ArrayList<>();
     try (ParquetReader<Object> parquetReader =
         AvroParquetReader.builder(new LocalInputFile(this.path))
-            .withDataModel(this.genericData)
+            .withDataModel(GenericData.get())
             .build()) {
+      List<String> records = new ArrayList<>();
       GenericData.Record value;
       for (int i = 0; i < numRecords; i++) {
         value = (GenericData.Record) parquetReader.read();
@@ -49,8 +49,8 @@ public class ParquetFileReader implements Reader {
           records.add(value.toString());
         }
       }
+      LOGGER.info(String.format("Retrieved %d records", records.size()));
+      return records;
     }
-    LOGGER.info(String.format("Retrieved %d records", records.size()));
-    return records;
   }
 }

@@ -66,7 +66,8 @@ public class AvroFileReaderTest {
   @DisplayName("Assert that an invalid Avro file throws an exception")
   public void testInvalidFile() {
     File file = new File(getClass().getClassLoader().getResource(INVALID_AVRO_FILE).getFile());
-    assertThrows(OutOfMemoryError.class, () -> new AvroFileReader(file));
+    AvroFileReader avroFileReader = new AvroFileReader(file);
+    assertThrows(OutOfMemoryError.class, () -> avroFileReader.getRecords(5));
   }
 
   private List<String> readRecords(String fileName, int numRecords) throws IOException {

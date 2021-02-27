@@ -13,29 +13,35 @@ import org.apache.avro.generic.GenericRecord;
 public class AvroFileReader implements Reader {
 
   private static final Logger LOGGER = Logger.getInstance(AvroFileReader.class);
-  private final DataFileReader<GenericRecord> dataFileReader;
+  private final File file;
+  private final GenericDatumReader<GenericRecord> datumReader;
 
-  public AvroFileReader(File file) throws OutOfMemoryError, IOException {
-    GenericData genericData = GenericDataCreator.createGenericData();
-    GenericDatumReader<GenericRecord> datumReader =
-        new GenericDatumReader<>(null, null, genericData);
-    this.dataFileReader = new DataFileReader<>(file, datumReader);
+  public AvroFileReader(File file) throws OutOfMemoryError {
+    this.file = file;
+    GenericDataConfigurer.configureGenericData();
+    this.datumReader = new GenericDatumReader<>(null, null, GenericData.get());
   }
 
   @Override
-  public String getSchema() {
-    return this.dataFileReader.getSchema().toString(true);
-  }
-
-  @Override
-  public List<String> getRecords(int numRecords) {
-    int i = 0;
-    List<String> records = new ArrayList<>();
-    while (this.dataFileReader.hasNext() && i < numRecords) {
-      records.add(this.dataFileReader.next().toString());
-      i++;
+  public String getSchema() throws IOException {
+    try (DataFileReader<GenericRecord> dataFileReader =
+        new DataFileReader<>(this.file, this.datumReader)) {
+      return dataFileReader.getSchema().toString(true);
     }
-    LOGGER.info(String.format("Retrieved %d records", i));
-    return records;
+  }
+
+  @Override
+  public List<String> getRecords(int numRecords) throws IOException {
+    try (DataFileReader<GenericRecord> dataFileReader =
+        new DataFileReader<>(this.file, this.datumReader)) {
+      int i = 0;
+      List<String> records = new ArrayList<>();
+      while (dataFileReader.hasNext() && i < numRecords) {
+        records.add(dataFileReader.next().toString());
+        i++;
+      }
+      LOGGER.info(String.format("Retrieved %d records", i));
+      return records;
+    }
   }
 }
