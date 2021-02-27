@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
@@ -29,8 +28,7 @@ public class ParquetFileReader implements Reader {
       if (firstRecord == null) {
         throw new IOException("Can't process empty Parquet file");
       }
-      Schema schema = firstRecord.getSchema();
-      return schema.toString(true);
+      return firstRecord.getSchema().toString(true);
     }
   }
 
