@@ -50,7 +50,7 @@ intellij {
     patchPluginXml {
         sinceBuild("171")
         changeNotes """
-      Reverting to Java 8 to ensure compatibility with older Java."""
+      Ensuring files are always closed after being read, preventing lock issues."""
     }
 }
 
