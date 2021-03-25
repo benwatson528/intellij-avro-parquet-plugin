@@ -8,7 +8,9 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Avro/Parquet Viewer" anchor="bottom"
-                    factoryClass="uk.co.hadoopathome.intellij.viewer.FileViewerToolWindow"/>
+        <toolWindow id="Avro/Parquet Viewer"
+                    anchor="bottom"
+                    factoryClass="uk.co.hadoopathome.intellij.viewer.FileViewerToolWindow"
+                    icon="/menuIcon.svg"/>
     </extensions>
 </idea-plugin>
