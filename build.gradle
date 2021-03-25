@@ -13,7 +13,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     //Avro dependencies
-    compile("org.apache.avro:avro:1.10.1") {
+    compile("org.apache.avro:avro:1.10.2") {
         exclude group: 'org.slf4j'
     }
     compile("org.xerial.snappy:snappy-java:1.1.8.1")
