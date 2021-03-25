@@ -13,17 +13,16 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     //Avro dependencies
-    compile("org.apache.avro:avro:1.10.0") {
+    compile("org.apache.avro:avro:1.10.1") {
         exclude group: 'org.slf4j'
     }
     compile("org.xerial.snappy:snappy-java:1.1.8.1")
 
     //Parquet dependencies
-    //This is org.apache.parquet:parquet-avro-1.11.0 with added support for INT96
-    compile files("libs/parquet-avro-1.11.1-SNAPSHOT.jar")
-    compile("org.apache.parquet:parquet-column:1.11.1")
-    compile("org.apache.parquet:parquet-hadoop:1.11.1")
-    compile("org.apache.parquet:parquet-format-structures:1.11.1")
+    compile("org.apache.parquet:parquet-avro:1.12.0")
+    compile("org.apache.parquet:parquet-column:1.12.0")
+    compile("org.apache.parquet:parquet-hadoop:1.12.0")
+    compile("org.apache.parquet:parquet-format-structures:1.12.0")
     compile("org.apache.hadoop:hadoop-client:3.3.0")
 
     //External dependencies
