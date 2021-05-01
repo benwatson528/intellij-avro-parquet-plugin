@@ -48,12 +48,6 @@ jobs:
           asset_name: intellij-avro-parquet-viewer-${{ steps.trim_tag.outputs.tag }}.zip
           asset_content_type: application/zip
 
-      - name: Publish to GitHub Packages
-        run: ./gradlew publish
-        env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Increment release version
         id: increment_version
         uses: christian-draeger/increment-semantic-version@1.0.1
