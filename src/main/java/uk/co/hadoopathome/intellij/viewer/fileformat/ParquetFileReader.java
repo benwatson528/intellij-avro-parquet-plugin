@@ -1,12 +1,28 @@
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import com.intellij.openapi.diagnostic.Logger;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.avro.Conversion;
+import org.apache.avro.LogicalType;
+import org.apache.avro.Schema;
+import org.apache.avro.data.TimeConversions;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.Decoder;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.EncoderFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
@@ -51,11 +67,55 @@ public class ParquetFileReader implements Reader {
           LOGGER.info(String.format("Retrieved %d records", records.size()));
           return records;
         } else {
-          records.add(value.toString());
+          records.add(
+              deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString());
         }
       }
       LOGGER.info(String.format("Retrieved %d records", records.size()));
       return records;
+    }
+  }
+
+  /**
+   * Correctly converts timestamp-milis LogicalType values to strings. Taken from
+   * https://stackoverflow.com/a/52041154/729819.
+   */
+  private GenericRecord deserialize(Schema schema, byte[] data) throws IOException {
+    GenericData genericData = new GenericData();
+    genericData.addLogicalTypeConversion(new TimestampMillisConversion());
+    InputStream is = new ByteArrayInputStream(data);
+    Decoder decoder = DecoderFactory.get().binaryDecoder(is, null);
+    DatumReader<GenericRecord> reader = new GenericDatumReader<>(schema, schema, genericData);
+    return reader.read(null, decoder);
+  }
+
+  private byte[] toByteArray(Schema schema, GenericRecord genericRecord) throws IOException {
+    GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(schema);
+    writer.getData().addLogicalTypeConversion(new TimeConversions.TimestampMillisConversion());
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null);
+    writer.write(genericRecord, encoder);
+    encoder.flush();
+    return baos.toByteArray();
+  }
+
+  public static class TimestampMillisConversion extends Conversion<String> {
+    public TimestampMillisConversion() {}
+
+    public Class<String> getConvertedType() {
+      return String.class;
+    }
+
+    public String getLogicalTypeName() {
+      return "timestamp-millis";
+    }
+
+    public String fromLong(Long millisFromEpoch, Schema schema, LogicalType type) {
+      return Instant.ofEpochSecond(millisFromEpoch).toString();
+    }
+
+    public Long toLong(String timestamp, Schema schema, LogicalType type) {
+      return new Long(timestamp);
     }
   }
 }

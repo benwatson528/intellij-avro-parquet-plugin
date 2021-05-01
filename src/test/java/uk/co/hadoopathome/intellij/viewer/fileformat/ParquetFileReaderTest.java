@@ -76,7 +76,7 @@ public class ParquetFileReaderTest {
     assertThat(records).hasSize(5);
     String firstRecord = records.get(0);
     assertThat(firstRecord)
-        .contains("{\"received_at\": 1970-01-19T12:02:37.304Z, \"name___string\": \"Tressa\"");
+        .contains("{\"received_at\": \"2020-08-27T19:41:44Z\", \"name___string\": \"Tressa\"");
   }
 
   private List<String> readRecords(String fileName, int numRecords) throws IOException {
