@@ -111,7 +111,7 @@ public class ParquetFileReader implements Reader {
     }
 
     public String fromLong(Long millisFromEpoch, Schema schema, LogicalType type) {
-      return Instant.ofEpochSecond(millisFromEpoch).toString();
+      return Instant.ofEpochMilli(millisFromEpoch).toString();
     }
 
     public Long toLong(String timestamp, Schema schema, LogicalType type) {
