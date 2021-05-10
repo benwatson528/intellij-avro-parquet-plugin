@@ -17,6 +17,7 @@ public class ParquetFileReaderTest {
   // https://github.com/Teradata/kylo/blob/master/samples/sample-data/parquet/userdata1.parquet
   private static final String INVALID_PARQUET_FILE = "parquet/int96_column.parquet";
   private static final String LOGICAL_DATE_PARQUET_FILE = "parquet/logical_date.parquet";
+  private static final String LOGICAL_DECIMAL_PARQUET_FILE = "parquet/logical_decimal.parquet";
 
   @Test
   @DisplayName("Assert that a schema can be extracted from a Parquet file")
@@ -77,6 +78,16 @@ public class ParquetFileReaderTest {
     String firstRecord = records.get(0);
     assertThat(firstRecord)
         .contains("{\"received_at\": \"1970-01-19T12:02:37.304Z\", \"name___string\": \"Tressa\"");
+  }
+
+  @Test
+  @DisplayName(
+      "Assert that a Parquet file with a LogicalType decimal column can still be displayed")
+  public void testDecimalLogicalType() throws IOException {
+    List<String> records = readRecords(LOGICAL_DECIMAL_PARQUET_FILE, 10);
+    assertThat(records).hasSize(3);
+    String firstRecord = records.get(0);
+    assertThat(firstRecord).contains("{\"name\": \"ben\", \"score\": 1.15}");
   }
 
   private List<String> readRecords(String fileName, int numRecords) throws IOException {
