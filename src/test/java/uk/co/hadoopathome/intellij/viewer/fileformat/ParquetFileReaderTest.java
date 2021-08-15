@@ -15,7 +15,7 @@ public class ParquetFileReaderTest {
   private static final String NESTED_PARQUET_FILE = "parquet/nested.parquet";
   private static final String LIST_PARQUET_FILE = "parquet/list.parquet";
   // https://github.com/Teradata/kylo/blob/master/samples/sample-data/parquet/userdata1.parquet
-  private static final String INVALID_PARQUET_FILE = "parquet/int96_column.parquet";
+  private static final String INT96_PARQUET_FILE = "parquet/int96_column.parquet";
   private static final String LOGICAL_DATE_PARQUET_FILE = "parquet/logical_date.parquet";
   private static final String LOGICAL_DECIMAL_PARQUET_FILE = "parquet/logical_decimal.parquet";
 
@@ -71,8 +71,8 @@ public class ParquetFileReaderTest {
 
   @Test
   @DisplayName("Assert that a Parquet file with an INT96 column can still be displayed")
-  public void testInvalidFile() throws IOException {
-    ParquetFileReader parquetFileReader = readRecords(INVALID_PARQUET_FILE);
+  public void testInt96File() throws IOException {
+    ParquetFileReader parquetFileReader = readRecords(INT96_PARQUET_FILE);
     int totalRecords = parquetFileReader.getNumRecords();
     assertThat(totalRecords).isEqualTo(1000);
     List<String> records = parquetFileReader.getRecords(10);
