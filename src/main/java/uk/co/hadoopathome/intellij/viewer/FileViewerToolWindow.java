@@ -178,13 +178,14 @@ public class FileViewerToolWindow implements ToolWindowFactory {
                       ? new AvroFileReader(currentFile)
                       : new ParquetFileReader(currentFile);
               List<String> records = reader.getRecords(numRecords);
+              int totalRecords = reader.getNumRecords();
               configureDataPanes(records);
               schemaTextPane.setText(reader.getSchema());
               String recordPlural = records.size() == 1 ? "" : "s";
               fileInfoLabel.setText(
                   String.format(
-                      "Displaying %d record%s from %s",
-                      records.size(), recordPlural, file.getPath()));
+                      "Displaying %d of %d record%s from %s",
+                      records.size(), totalRecords, recordPlural, file.getPath()));
               return true;
             } catch (Throwable t) {
               JOptionPane.showMessageDialog(
