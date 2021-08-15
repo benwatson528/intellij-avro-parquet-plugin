@@ -22,16 +22,18 @@ public class ParquetFileReaderTest {
   @Test
   @DisplayName("Assert that a schema can be extracted from a Parquet file")
   public void testGetSchema() throws IOException {
-    File file = new File(getClass().getClassLoader().getResource(NESTED_PARQUET_FILE).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    String schema = parquetReader.getSchema();
+    ParquetFileReader parquetFileReader = readRecords(NESTED_PARQUET_FILE);
+    String schema = parquetFileReader.getSchema();
     assertThat(schema).contains("\"type\" : [ \"int\", \"null\" ]");
   }
 
   @Test
   @DisplayName("Assert that one record can be extracted from a Parquet file")
   public void testGetRecords() throws IOException {
-    List<String> records = readRecords(NESTED_PARQUET_FILE, 10);
+    ParquetFileReader parquetFileReader = readRecords(NESTED_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(6);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(6);
     String firstRecord = records.get(0);
     assertThat(firstRecord)
@@ -43,7 +45,10 @@ public class ParquetFileReaderTest {
   @Test
   @DisplayName("Assert that all records can be extracted from a Parquet file")
   public void testGetAllRecords() throws IOException {
-    List<String> records = readRecords(NESTED_PARQUET_FILE, 99999);
+    ParquetFileReader parquetFileReader = readRecords(NESTED_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(6);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(6);
     String firstRecord = records.get(0);
     assertThat(firstRecord)
@@ -55,7 +60,10 @@ public class ParquetFileReaderTest {
   @Test
   @DisplayName("Assert that a Parquet file with complex nesting is correctly parsed")
   public void testList() throws IOException {
-    List<String> records = readRecords(LIST_PARQUET_FILE, 10);
+    ParquetFileReader parquetFileReader = readRecords(LIST_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(1);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(1);
     String firstRecord = records.get(0);
     assertThat(firstRecord).contains("[{\"element\": 42}, {\"element\": 47}, {\"element\": 139}]");
@@ -64,7 +72,10 @@ public class ParquetFileReaderTest {
   @Test
   @DisplayName("Assert that a Parquet file with an INT96 column can still be displayed")
   public void testInvalidFile() throws IOException {
-    List<String> records = readRecords(INVALID_PARQUET_FILE, 10);
+    ParquetFileReader parquetFileReader = readRecords(INVALID_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(1000);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(10);
     String firstRecord = records.get(0);
     assertThat(firstRecord).contains("\"first_name\": \"Amanda\", \"last_name\": \"Jordan\"");
@@ -73,7 +84,10 @@ public class ParquetFileReaderTest {
   @Test
   @DisplayName("Assert that a Parquet file with a LogicalType date column can still be displayed")
   public void testDateLogicalType() throws IOException {
-    List<String> records = readRecords(LOGICAL_DATE_PARQUET_FILE, 10);
+    ParquetFileReader parquetFileReader = readRecords(LOGICAL_DATE_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(5);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(5);
     String firstRecord = records.get(0);
     assertThat(firstRecord)
@@ -84,15 +98,17 @@ public class ParquetFileReaderTest {
   @DisplayName(
       "Assert that a Parquet file with a LogicalType decimal column can still be displayed")
   public void testDecimalLogicalType() throws IOException {
-    List<String> records = readRecords(LOGICAL_DECIMAL_PARQUET_FILE, 10);
+    ParquetFileReader parquetFileReader = readRecords(LOGICAL_DECIMAL_PARQUET_FILE);
+    int totalRecords = parquetFileReader.getNumRecords();
+    assertThat(totalRecords).isEqualTo(3);
+    List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(3);
     String firstRecord = records.get(0);
     assertThat(firstRecord).contains("{\"name\": \"ben\", \"score\": 1.15}");
   }
 
-  private List<String> readRecords(String fileName, int numRecords) throws IOException {
+  private ParquetFileReader readRecords(String fileName) {
     File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
-    Reader parquetReader = new ParquetFileReader(file);
-    return parquetReader.getRecords(numRecords);
+    return new ParquetFileReader(file);
   }
 }

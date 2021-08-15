@@ -1,5 +1,6 @@
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
+import com.google.common.collect.Iterators;
 import com.intellij.openapi.diagnostic.Logger;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,14 @@ public class AvroFileReader implements Reader {
     try (DataFileReader<GenericRecord> dataFileReader =
         new DataFileReader<>(this.file, this.datumReader)) {
       return dataFileReader.getSchema().toString(true);
+    }
+  }
+
+  @Override
+  public int getNumRecords() throws IOException {
+    try (DataFileReader<GenericRecord> dataFileReader =
+        new DataFileReader<>(this.file, this.datumReader)) {
+      return Iterators.size(dataFileReader);
     }
   }
 
