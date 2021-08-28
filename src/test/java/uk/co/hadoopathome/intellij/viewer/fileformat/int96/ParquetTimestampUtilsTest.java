@@ -2,7 +2,6 @@ package uk.co.hadoopathome.intellij.viewer.fileformat.int96;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.apache.parquet.io.api.Binary;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
