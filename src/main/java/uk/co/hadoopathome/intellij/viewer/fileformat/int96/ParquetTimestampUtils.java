@@ -99,10 +99,10 @@ public final class ParquetTimestampUtils {
     String extracted = jsonRecord.substring(matcher.start(), matcher.end());
     String removedBrackets = extracted.substring(1, extracted.length() - 1);
     String[] split = removedBrackets.split(", ");
-    return to_byte(split);
+    return toByte(split);
   }
 
-  private static byte[] to_byte(String[] strs) {
+  private static byte[] toByte(String[] strs) {
     byte[] bytes = new byte[strs.length];
     for (int i = 0; i < strs.length; i++) {
       bytes[i] = Byte.parseByte(strs[i]);
