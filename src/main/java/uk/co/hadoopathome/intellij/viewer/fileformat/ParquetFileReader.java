@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -41,11 +43,14 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
+import org.apache.parquet.io.api.Binary;
 
 public class ParquetFileReader implements Reader {
 
+  public static final String INT_96_BYTE_REGEX =
+      "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+\\]";
+  public static final Pattern PATTERN = Pattern.compile(INT_96_BYTE_REGEX);
   private static final Logger LOGGER = Logger.getInstance(ParquetFileReader.class);
-  public static final String INT_96_BYTE_REGEX = "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+\\]";
   private final Path path;
   private final Configuration conf;
 
@@ -105,12 +110,7 @@ public class ParquetFileReader implements Reader {
         } else {
           String jsonRecord =
               deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString();
-          Pattern pattern = Pattern.compile(INT_96_BYTE_REGEX);
-          Matcher matcher = pattern.matcher(jsonRecord);
-          while(matcher.find()) {
-            System.out.println("found: " + matcher.group(1));
-            matcher.start(1)
-          }
+          jsonRecord = convertInt96(jsonRecord);
           records.add(jsonRecord);
         }
       }
@@ -119,8 +119,30 @@ public class ParquetFileReader implements Reader {
     }
   }
 
-  //Loop through the string
-  //If I find a match:
+  private String convertInt96(String jsonRecord) {
+    Matcher matcher = PATTERN.matcher(jsonRecord);
+    if (matcher.find()) {
+      System.out.println("found: " + matcher.group(1));
+      int startIdx = matcher.start();
+      int endIdx = matcher.end();
+      String extracted = jsonRecord.substring(matcher.start(), matcher.end());
+      String removedBrackets = extracted.substring(1, extracted.length() - 1);
+      String[] split = removedBrackets.split(", ");
+      
+      Binary binary = Binary.fromReusedByteArray(bytes);
+      long timestampMillis = ParquetTimestampUtils.getTimestampMillis(binary);
+      ZonedDateTime utc = Instant.ofEpochMilli(timestampMillis).atZone(ZoneId.of("UTC"));
+      String formattedTimestamp = utc.toString();
+      // replace
+      String updatedRecord =
+          jsonRecord.substring(0, startIdx) + formattedTimestamp + jsonRecord.substring(endIdx);
+      return convertInt96(updatedRecord);
+    }
+    return jsonRecord;
+  }
+
+  // Loop through the string
+  // If I find a match:
   //   go into a new method
   //   extract it (from first + last chars)
   //   replace it and return the string
