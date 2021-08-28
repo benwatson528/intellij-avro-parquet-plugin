@@ -21,12 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.avro.Conversion;
 import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
@@ -43,13 +39,10 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
-import org.apache.parquet.io.api.Binary;
+import uk.co.hadoopathome.intellij.viewer.fileformat.int96.ParquetTimestampUtils;
 
 public class ParquetFileReader implements Reader {
 
-  public static final String INT_96_BYTE_REGEX =
-      "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+\\]";
-  public static final Pattern PATTERN = Pattern.compile(INT_96_BYTE_REGEX);
   private static final Logger LOGGER = Logger.getInstance(ParquetFileReader.class);
   private final Path path;
   private final Configuration conf;
@@ -59,14 +52,6 @@ public class ParquetFileReader implements Reader {
     this.conf = new Configuration();
     this.conf.set("parquet.avro.readInt96AsFixed", "true");
     GenericDataConfigurer.configureGenericData();
-  }
-
-  public static byte[] to_byte(String[] strs) {
-    byte[] bytes = new byte[strs.length];
-    for (int i = 0; i < strs.length; i++) {
-      bytes[i] = Byte.parseByte(strs[i]);
-    }
-    return bytes;
   }
 
   @Override
@@ -118,7 +103,7 @@ public class ParquetFileReader implements Reader {
         } else {
           String jsonRecord =
               deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString();
-          jsonRecord = convertInt96(jsonRecord);
+          jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
           records.add(jsonRecord);
         }
       }
@@ -126,35 +111,6 @@ public class ParquetFileReader implements Reader {
       return records;
     }
   }
-
-  private String convertInt96(String jsonRecord) {
-    Matcher matcher = PATTERN.matcher(jsonRecord);
-    if (matcher.find()) {
-      System.out.println("found: " + matcher.group(1));
-      int startIdx = matcher.start();
-      int endIdx = matcher.end();
-      String extracted = jsonRecord.substring(matcher.start(), matcher.end());
-      String removedBrackets = extracted.substring(1, extracted.length() - 1);
-      String[] split = removedBrackets.split(", ");
-      byte[] bytes = to_byte(split);
-      Binary binary = Binary.fromReusedByteArray(bytes);
-      long timestampMillis = ParquetTimestampUtils.getTimestampMillis(binary);
-      ZonedDateTime utc = Instant.ofEpochMilli(timestampMillis).atZone(ZoneId.of("UTC"));
-      String formattedTimestamp = utc.toString();
-      String updatedRecord =
-          jsonRecord.substring(0, startIdx) + formattedTimestamp + jsonRecord.substring(endIdx);
-      return convertInt96(updatedRecord);
-    }
-    return jsonRecord;
-  }
-
-  // Loop through the string
-  // If I find a match:
-  //   go into a new method
-  //   extract it (from first + last chars)
-  //   replace it and return the string
-  //   run the regex again on the new string
-  //   when the matches stop, end
 
   /**
    * Correctly converts timestamp-milis LogicalType values to strings. Taken from

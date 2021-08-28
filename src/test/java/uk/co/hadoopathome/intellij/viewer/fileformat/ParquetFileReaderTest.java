@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.apache.parquet.io.api.Binary;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -119,15 +118,6 @@ public class ParquetFileReaderTest {
     assertThat(records).hasSize(3);
     String firstRecord = records.get(0);
     assertThat(firstRecord).contains("{\"name\": \"ben\", \"score\": 1.15}");
-  }
-
-  @Test
-  @DisplayName("Assert that INT96 to timestamp conversion works correctly")
-  public void testInt96Convert() {
-    byte[] bytes = new byte[] {0, 42, -23, 108, -14, 25, 0, 0, 78, 127, 37, 0};
-    Binary tsValue = Binary.fromReusedByteArray(bytes);
-    long timestampMillis = ParquetTimestampUtils.getTimestampMillis(tsValue);
-    assertThat(timestampMillis).isEqualTo(1454486129000L);
   }
 
   private ParquetFileReader readRecords(String fileName) {

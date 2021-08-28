@@ -11,18 +11,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.co.hadoopathome.intellij.viewer.fileformat;
+package uk.co.hadoopathome.intellij.viewer.fileformat.int96;
 
 import java.nio.ByteBuffer;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.parquet.io.api.Binary;
 
 /**
  * Utility class for decoding INT96 encoded parquet timestamp to timestamp millis in GMT. This class
- * is directly taken from
+ * is adapted from
  * https://github.com/prestodb/presto/blob/master/presto-parquet/src/main/java/com/facebook/presto/parquet/ParquetTimestampUtils.java.
  */
 public final class ParquetTimestampUtils {
+  public static final String INT_96_BYTE_REGEX =
+      "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+\\]";
+  public static final Pattern PATTERN = Pattern.compile(INT_96_BYTE_REGEX);
   private static final int JULIAN_EPOCH_OFFSET_DAYS = 2_440_588;
   private static final long MILLIS_IN_DAY = TimeUnit.DAYS.toMillis(1);
   private static final long NANOS_PER_MILLISECOND = TimeUnit.MILLISECONDS.toNanos(1);
@@ -56,5 +64,34 @@ public final class ParquetTimestampUtils {
 
   private static long julianDayToMillis(int julianDay) {
     return (julianDay - JULIAN_EPOCH_OFFSET_DAYS) * MILLIS_IN_DAY;
+  }
+
+  public static byte[] to_byte(String[] strs) {
+    byte[] bytes = new byte[strs.length];
+    for (int i = 0; i < strs.length; i++) {
+      bytes[i] = Byte.parseByte(strs[i]);
+    }
+    return bytes;
+  }
+
+  public static String convertInt96(String jsonRecord) {
+    Matcher matcher = PATTERN.matcher(jsonRecord);
+    if (matcher.find()) {
+      System.out.println("found: " + matcher.group(1));
+      int startIdx = matcher.start();
+      int endIdx = matcher.end();
+      String extracted = jsonRecord.substring(matcher.start(), matcher.end());
+      String removedBrackets = extracted.substring(1, extracted.length() - 1);
+      String[] split = removedBrackets.split(", ");
+      byte[] bytes = to_byte(split);
+      Binary binary = Binary.fromReusedByteArray(bytes);
+      long timestampMillis = ParquetTimestampUtils.getTimestampMillis(binary);
+      ZonedDateTime utc = Instant.ofEpochMilli(timestampMillis).atZone(ZoneId.of("UTC"));
+      String formattedTimestamp = utc.toString();
+      String updatedRecord =
+          jsonRecord.substring(0, startIdx) + formattedTimestamp + jsonRecord.substring(endIdx);
+      return convertInt96(updatedRecord);
+    }
+    return jsonRecord;
   }
 }
