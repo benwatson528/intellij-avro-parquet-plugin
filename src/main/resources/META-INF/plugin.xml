@@ -2,7 +2,7 @@
     <id>uk.co.hadoopathome.intellij.avro.intellijavroviewer</id>
     <name>Avro and Parquet Viewer</name>
     <description>A Tool Window for viewing Avro and Parquet files and their schemas</description>
-    <version>2.10.0</version>
+    <version>2.11.0</version>
     <vendor email="ben@bwinsights.co.uk" url="http://www.github.com/benwatson528">Ben Watson</vendor>
 
     <depends>com.intellij.modules.lang</depends>
