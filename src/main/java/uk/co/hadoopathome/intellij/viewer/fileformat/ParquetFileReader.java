@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import com.intellij.openapi.diagnostic.Logger;
@@ -26,6 +39,7 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
+import uk.co.hadoopathome.intellij.viewer.fileformat.int96.ParquetTimestampUtils;
 
 public class ParquetFileReader implements Reader {
 
@@ -87,8 +101,10 @@ public class ParquetFileReader implements Reader {
           LOGGER.info(String.format("Retrieved %d records", records.size()));
           return records;
         } else {
-          records.add(
-              deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString());
+          String jsonRecord =
+              deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString();
+          jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
+          records.add(jsonRecord);
         }
       }
       LOGGER.info(String.format("Retrieved %d records", records.size()));

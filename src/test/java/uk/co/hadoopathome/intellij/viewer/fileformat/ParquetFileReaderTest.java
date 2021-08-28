@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,7 +91,13 @@ public class ParquetFileReaderTest {
     List<String> records = parquetFileReader.getRecords(10);
     assertThat(records).hasSize(10);
     String firstRecord = records.get(0);
-    assertThat(firstRecord).contains("\"first_name\": \"Amanda\", \"last_name\": \"Jordan\"");
+    assertThat(firstRecord)
+        .contains(
+            "{\"registration_dttm\": \"2016-02-03T07:55:29Z[UTC]\", \"id\": 1, \"first_name\": \"Amanda\", "
+                + "\"last_name\": \"Jordan\", \"email\": \"ajordan0@com.com\", \"gender\": \"Female\", "
+                + "\"ip_address\": \"1.197.201.2\", \"cc\": \"6759521864920116\", \"country\": \"Indonesia\", "
+                + "\"birthdate\": \"3/8/1971\", \"salary\": 49756.53, \"title\": \"Internal Auditor\", "
+                + "\"comments\": \"1E+02\"}");
   }
 
   @Test
