@@ -39,7 +39,6 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.parquet.avro.AvroParquetReader;
 import org.apache.parquet.hadoop.ParquetReader;
-import uk.co.hadoopathome.intellij.viewer.fileformat.int96.ParquetTimestampUtils;
 
 public class ParquetFileReader implements Reader {
 
@@ -103,7 +102,7 @@ public class ParquetFileReader implements Reader {
         } else {
           String jsonRecord =
               deserialize(value.getSchema(), toByteArray(value.getSchema(), value)).toString();
-          jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
+          //          jsonRecord = ParquetTimestampUtils.convertInt96(jsonRecord);
           records.add(jsonRecord);
         }
       }
