@@ -128,7 +128,7 @@ public class ParquetFileReader implements Reader {
       String extracted = jsonRecord.substring(matcher.start(), matcher.end());
       String removedBrackets = extracted.substring(1, extracted.length() - 1);
       String[] split = removedBrackets.split(", ");
-      
+
       Binary binary = Binary.fromReusedByteArray(bytes);
       long timestampMillis = ParquetTimestampUtils.getTimestampMillis(binary);
       ZonedDateTime utc = Instant.ofEpochMilli(timestampMillis).atZone(ZoneId.of("UTC"));
