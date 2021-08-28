@@ -61,6 +61,14 @@ public class ParquetFileReader implements Reader {
     GenericDataConfigurer.configureGenericData();
   }
 
+  public static byte[] to_byte(String[] strs) {
+    byte[] bytes = new byte[strs.length];
+    for (int i = 0; i < strs.length; i++) {
+      bytes[i] = Byte.parseByte(strs[i]);
+    }
+    return bytes;
+  }
+
   @Override
   public String getSchema() throws IOException {
     try (ParquetReader<Object> parquetReader =
@@ -128,12 +136,11 @@ public class ParquetFileReader implements Reader {
       String extracted = jsonRecord.substring(matcher.start(), matcher.end());
       String removedBrackets = extracted.substring(1, extracted.length() - 1);
       String[] split = removedBrackets.split(", ");
-      
+      byte[] bytes = to_byte(split);
       Binary binary = Binary.fromReusedByteArray(bytes);
       long timestampMillis = ParquetTimestampUtils.getTimestampMillis(binary);
       ZonedDateTime utc = Instant.ofEpochMilli(timestampMillis).atZone(ZoneId.of("UTC"));
       String formattedTimestamp = utc.toString();
-      // replace
       String updatedRecord =
           jsonRecord.substring(0, startIdx) + formattedTimestamp + jsonRecord.substring(endIdx);
       return convertInt96(updatedRecord);
