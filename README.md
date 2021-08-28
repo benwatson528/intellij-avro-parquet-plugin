@@ -71,9 +71,9 @@ To release a new version of the plugin:
    ```
 5. When the tag is pushed, the "Create Release" GitHub Action will automatically run and do the following:
    1. Create a Release in GitHub,
-   2. Build and upload the plugin zip to both the [GitHub Release](https://github.com/benwatson528/intellij-avro-parquet-plugin/releases) and [GitHub Packages](https://github.com/benwatson528/intellij-avro-parquet-plugin/packages),
+   2. Build and upload the plugin zip to [GitHub Releases](https://github.com/benwatson528/intellij-avro-parquet-plugin/releases),
    3. Increment the project version and commit the new version to `gradle.properties` and `plugin.xml` in `master`.
-6. Upload the zip to the [IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer).
+6. Upload the zip to the [IntelliJ Marketplace](https://plugins.jetbrains.com/plugin/12281-avro-and-parquet-viewer) (currently only @benwatson528 has credentials).
 
 
 ## Support
