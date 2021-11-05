@@ -16,7 +16,7 @@ dependencies {
     compile("org.apache.avro:avro:1.10.2") {
         exclude group: 'org.slf4j'
     }
-    compile("org.xerial.snappy:snappy-java:1.1.8.1")
+    compile("org.xerial.snappy:snappy-java:1.1.8.4")
 
     //Parquet dependencies
     compile("org.apache.parquet:parquet-avro:1.12.0")
