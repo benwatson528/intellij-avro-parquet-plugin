@@ -38,16 +38,19 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.18.1")
 }
 
+configurations.implementation {
+    exclude(module = "slf4j-api")
+    exclude(module = "slf4j-log4j12")
+}
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
+    updateSinceUntilBuild.set(false)
+    sameSinceUntilBuild.set(true)
 }
-
-
-
 
 tasks {
     // Set the JVM compatibility versions
