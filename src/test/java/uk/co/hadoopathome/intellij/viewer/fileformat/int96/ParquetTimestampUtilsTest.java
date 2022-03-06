@@ -24,9 +24,10 @@ class ParquetTimestampUtilsTest {
   @DisplayName("Assert that INT96 to timestamp conversion works correctly")
   public void testInt96Convert() {
     String json =
-        "{\"registration_dttm\": [0, 42, -23, 108, -14, 25, 0, 0, 78, 127, 37, 0], \"last_name\": \"Jordan\", "
-            + "\"last_updated\": [0, 94, 48, -48, -31, 55, 0, 0, 78, 127, 37, 0], \"gender\": \"Female\", "
-            + "\"created_at\": [0, -14, -70, -51, -5, 1, 0, 0, 78, 127, 37, 0]}";
+        "{\"registration_dttm\": [0, 42, -23, 108, -14, 25, 0, 0, 78, 127, 37, 0], \"last_name\":"
+            + " \"Jordan\", \"last_updated\": [0, 94, 48, -48, -31, 55, 0, 0, 78, 127, 37, 0],"
+            + " \"gender\": \"Female\", \"created_at\": [0, -14, -70, -51, -5, 1, 0, 0, 78, 127,"
+            + " 37, 0]}";
     String updatedJson = ParquetTimestampUtils.convertInt96(json);
     assertThat(updatedJson)
         .contains(

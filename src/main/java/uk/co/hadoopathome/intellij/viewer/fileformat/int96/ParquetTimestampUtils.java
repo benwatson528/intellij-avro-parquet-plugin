@@ -30,7 +30,8 @@ import org.apache.parquet.io.api.Binary;
  */
 public final class ParquetTimestampUtils {
   private static final String INT_96_BYTE_REGEX =
-      "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+\\]";
+      "\\[-?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+, -?\\d+,"
+          + " -?\\d+\\]";
   private static final Pattern PATTERN = Pattern.compile(INT_96_BYTE_REGEX);
   private static final int JULIAN_EPOCH_OFFSET_DAYS = 2_440_588;
   private static final long MILLIS_IN_DAY = TimeUnit.DAYS.toMillis(1);
