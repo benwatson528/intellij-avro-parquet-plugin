@@ -17,25 +17,25 @@ repositories {
 
 dependencies {
     //Avro dependencies
-    implementation("org.apache.avro:avro:1.10.2")
+    implementation("org.apache.avro:avro:1.11.0")
     implementation("org.xerial.snappy:snappy-java:1.1.8.4")
 
     //Parquet dependencies
-    implementation("org.apache.parquet:parquet-avro:1.12.0")
-    implementation("org.apache.parquet:parquet-column:1.12.0")
-    implementation("org.apache.parquet:parquet-hadoop:1.12.0")
-    implementation("org.apache.parquet:parquet-format-structures:1.12.0")
-    implementation("org.apache.hadoop:hadoop-client:3.3.0")
+    implementation("org.apache.parquet:parquet-avro:1.12.2")
+    implementation("org.apache.parquet:parquet-column:1.12.2")
+    implementation("org.apache.parquet:parquet-hadoop:1.12.2")
+    implementation("org.apache.parquet:parquet-format-structures:1.12.2")
+    implementation("org.apache.hadoop:hadoop-client:3.3.2")
 
     //External dependencies
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("com.google.guava:guava:23.6-jre")
-    implementation("com.fifesoft:rsyntaxtextarea:3.1.1")
-    implementation("com.github.wnameless.json:json-flattener:0.11.1")
+    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.fifesoft:rsyntaxtextarea:3.1.6")
+    implementation("com.github.wnameless.json:json-flattener:0.13.0")
 
     //Test dependencies
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    testImplementation("org.assertj:assertj-core:3.18.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("org.assertj:assertj-core:3.22.0")
 }
 
 configurations.implementation {
