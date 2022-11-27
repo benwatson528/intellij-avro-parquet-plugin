@@ -115,7 +115,7 @@ public class ParquetFileReader implements Reader {
    * https://stackoverflow.com/a/52041154/729819.
    */
   private GenericRecord deserialize(Schema schema, byte[] data) throws IOException {
-//    GenericData.get().addLogicalTypeConversion(new TimestampMillisConversion());
+    //    GenericData.get().addLogicalTypeConversion(new TimestampMillisConversion());
     InputStream is = new ByteArrayInputStream(data);
     Decoder decoder = DecoderFactory.get().binaryDecoder(is, null);
     DatumReader<GenericRecord> reader = new GenericDatumReader<>(schema, schema, GenericData.get());
