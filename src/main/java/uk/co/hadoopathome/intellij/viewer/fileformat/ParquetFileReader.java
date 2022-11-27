@@ -20,11 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.avro.Conversion;
-import org.apache.avro.LogicalType;
 import org.apache.avro.Schema;
 import org.apache.avro.data.TimeConversions;
 import org.apache.avro.generic.GenericData;
@@ -47,11 +44,12 @@ public class ParquetFileReader implements Reader {
   private final Path path;
   private final Configuration conf;
 
-  public ParquetFileReader(File file) {
+  public ParquetFileReader(File file) throws IOException {
     this.path = file.toPath();
     this.conf = new Configuration();
     this.conf.set("parquet.avro.readInt96AsFixed", "true");
     GenericDataConfigurer.configureGenericData();
+    getRecords(1);
   }
 
   @Override
@@ -117,7 +115,7 @@ public class ParquetFileReader implements Reader {
    * https://stackoverflow.com/a/52041154/729819.
    */
   private GenericRecord deserialize(Schema schema, byte[] data) throws IOException {
-    GenericData.get().addLogicalTypeConversion(new TimestampMillisConversion());
+//    GenericData.get().addLogicalTypeConversion(new TimestampMillisConversion());
     InputStream is = new ByteArrayInputStream(data);
     Decoder decoder = DecoderFactory.get().binaryDecoder(is, null);
     DatumReader<GenericRecord> reader = new GenericDatumReader<>(schema, schema, GenericData.get());
@@ -132,25 +130,5 @@ public class ParquetFileReader implements Reader {
     writer.write(genericRecord, encoder);
     encoder.flush();
     return baos.toByteArray();
-  }
-
-  public static class TimestampMillisConversion extends Conversion<String> {
-    public TimestampMillisConversion() {}
-
-    public Class<String> getConvertedType() {
-      return String.class;
-    }
-
-    public String getLogicalTypeName() {
-      return "timestamp-millis";
-    }
-
-    public String fromLong(Long millisFromEpoch, Schema schema, LogicalType type) {
-      return Instant.ofEpochMilli(millisFromEpoch).toString();
-    }
-
-    public Long toLong(String timestamp, Schema schema, LogicalType type) {
-      return new Long(timestamp);
-    }
   }
 }

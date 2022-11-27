@@ -30,10 +30,11 @@ public class AvroFileReader implements Reader {
   private final File file;
   private final GenericDatumReader<GenericRecord> datumReader;
 
-  public AvroFileReader(File file) throws OutOfMemoryError {
+  public AvroFileReader(File file) throws OutOfMemoryError, IOException {
     this.file = file;
     GenericDataConfigurer.configureGenericData();
     this.datumReader = new GenericDatumReader<>(null, null, GenericData.get());
+    getRecords(1);
   }
 
   @Override

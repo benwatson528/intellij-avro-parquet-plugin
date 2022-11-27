@@ -127,7 +127,7 @@ public class ParquetFileReaderTest {
     assertThat(firstRecord).contains("{\"name\": \"ben\", \"score\": 1.15}");
   }
 
-  private ParquetFileReader readRecords(String fileName) {
+  private ParquetFileReader readRecords(String fileName) throws IOException {
     File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
     return new ParquetFileReader(file);
   }
