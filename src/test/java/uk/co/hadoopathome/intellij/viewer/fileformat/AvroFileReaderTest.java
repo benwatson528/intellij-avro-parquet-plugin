@@ -15,6 +15,7 @@ package uk.co.hadoopathome.intellij.viewer.fileformat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,25 +77,28 @@ public class AvroFileReaderTest {
 
   @Test
   @DisplayName("Assert that an Avro file with a decimal LogicalType is correctly parsed")
-  public void testDecimalLogicalType() throws IOException {
-    AvroFileReader avroFileReader = readRecords(DECIMAL_LOGICAL_TYPE);
-    int totalRecords = avroFileReader.getNumRecords();
-    assertThat(totalRecords).isEqualTo(1);
-    List<String> records = avroFileReader.getRecords(100);
-    assertThat(records).hasSize(1);
-    String firstRecord = records.get(0);
-    assertThat(firstRecord).contains("25.190000");
+  public void testDecimalLogicalType() {
+    try {
+      AvroFileReader avroFileReader = readRecords(DECIMAL_LOGICAL_TYPE);
+      int totalRecords = avroFileReader.getNumRecords();
+      assertThat(totalRecords).isEqualTo(1);
+      List<String> records = avroFileReader.getRecords(100);
+      assertThat(records).hasSize(1);
+      String firstRecord = records.get(0);
+      assertThat(firstRecord).contains("25.190000");
+    } catch (IOException e) {
+      fail();
+    }
   }
 
   @Test
   @DisplayName("Assert that an invalid Avro file throws an exception")
   public void testInvalidFile() {
     File file = new File(getClass().getClassLoader().getResource(INVALID_AVRO_FILE).getFile());
-    AvroFileReader avroFileReader = new AvroFileReader(file);
-    assertThrows(OutOfMemoryError.class, () -> avroFileReader.getRecords(5));
+    assertThrows(OutOfMemoryError.class, () -> new AvroFileReader(file));
   }
 
-  private AvroFileReader readRecords(String fileName) {
+  private AvroFileReader readRecords(String fileName) throws IOException {
     File file = new File(getClass().getClassLoader().getResource(fileName).getFile());
     return new AvroFileReader(file);
   }
