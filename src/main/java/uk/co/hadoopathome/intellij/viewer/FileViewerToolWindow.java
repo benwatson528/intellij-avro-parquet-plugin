@@ -207,22 +207,26 @@ public class FileViewerToolWindow implements ToolWindowFactory {
   }
 
   /**
-   * Identifies the file type of the dropped file by attempting to parse it with both readers - either Avro or Parquet.
+   * Identifies the file type of the dropped file by attempting to parse it with both readers -
+   * either Avro or Parquet.
+   *
    * @param currentFile the file to be parsed
-   * @return the AvroFileReader or ParquetFileReader, else an exception if the file is not recognised by either
+   * @return the AvroFileReader or ParquetFileReader, else an exception if the file is not
+   *     recognised by either
    */
   private Reader detectFileType(File currentFile) throws IOException {
     try {
       return new AvroFileReader(currentFile);
-    } catch(Exception e) {
+    } catch (Exception e) {
       LOGGER.debug(String.format("File %s is not an Avro file", currentFile));
     }
     try {
       return new ParquetFileReader(currentFile);
-    } catch(Exception e) {
+    } catch (Exception e) {
       LOGGER.debug(String.format("File %s is not a Parquet file", currentFile));
     }
-    throw new IOException(String.format("File %s is not recognised as either Parquet or Avro", currentFile));
+    throw new IOException(
+        String.format("File %s is not recognised as either Parquet or Avro", currentFile));
   }
 
   /**

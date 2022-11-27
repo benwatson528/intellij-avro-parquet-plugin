@@ -115,8 +115,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
-  @DisplayName(
-      "Assert that a Parquet file with a LogicalType decimal column can be displayed")
+  @DisplayName("Assert that a Parquet file with a LogicalType decimal column can be displayed")
   public void testDecimalLogicalType() throws IOException {
     ParquetFileReader parquetFileReader = readRecords(LOGICAL_DECIMAL_PARQUET_FILE);
     int totalRecords = parquetFileReader.getNumRecords();
