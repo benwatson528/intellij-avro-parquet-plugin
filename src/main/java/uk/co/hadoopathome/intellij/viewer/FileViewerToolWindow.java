@@ -179,7 +179,8 @@ public class FileViewerToolWindow implements ToolWindowFactory {
             schemaTextPane.setText(String.format("Processing file %s...", file.getPath()));
             try {
               Reader reader = detectFileType(currentFile);
-              LOGGER.info(String.format("Detected file %s as a %s", currentFile, reader.getClass()));
+              LOGGER.info(
+                  String.format("Detected file %s as a %s", currentFile, reader.getClass()));
               List<String> records = reader.getRecords(numRecords);
               int totalRecords = reader.getNumRecords();
               configureDataPanes(records);
