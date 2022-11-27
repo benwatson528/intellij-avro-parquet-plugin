@@ -83,7 +83,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
-  @DisplayName("Assert that a Parquet file with an INT96 column can still be displayed")
+  @DisplayName("Assert that a Parquet file with an INT96 column can be displayed")
   public void testInt96File() throws IOException {
     ParquetFileReader parquetFileReader = readRecords(INT96_PARQUET_FILE);
     int totalRecords = parquetFileReader.getNumRecords();
@@ -102,7 +102,7 @@ public class ParquetFileReaderTest {
   }
 
   @Test
-  @DisplayName("Assert that a Parquet file with a LogicalType date column can still be displayed")
+  @DisplayName("Assert that a Parquet file with a LogicalType date column can be displayed")
   public void testDateLogicalType() throws IOException {
     ParquetFileReader parquetFileReader = readRecords(LOGICAL_DATE_PARQUET_FILE);
     int totalRecords = parquetFileReader.getNumRecords();
@@ -116,7 +116,7 @@ public class ParquetFileReaderTest {
 
   @Test
   @DisplayName(
-      "Assert that a Parquet file with a LogicalType decimal column can still be displayed")
+      "Assert that a Parquet file with a LogicalType decimal column can be displayed")
   public void testDecimalLogicalType() throws IOException {
     ParquetFileReader parquetFileReader = readRecords(LOGICAL_DECIMAL_PARQUET_FILE);
     int totalRecords = parquetFileReader.getNumRecords();

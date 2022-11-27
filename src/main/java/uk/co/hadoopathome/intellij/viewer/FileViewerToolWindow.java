@@ -105,14 +105,6 @@ public class FileViewerToolWindow implements ToolWindowFactory {
           File file =
               ((List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor))
                   .get(0);
-          String fileName = file.getName().toLowerCase();
-          if (!fileName.contains("avro") && !fileName.contains("parquet")) {
-            JOptionPane.showMessageDialog(
-                null,
-                String.format(
-                    "File name \"%s\" must contain either \"avro\" or \"parquet\"", fileName));
-            return;
-          }
           String path = file.getPath();
           schemaTextPane.setText(String.format("Processing file %s", path));
           LOGGER.info(String.format("Received file %s", path));
@@ -186,10 +178,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
           protected Boolean doInBackground() {
             schemaTextPane.setText(String.format("Processing file %s...", file.getPath()));
             try {
-              Reader reader =
-                  currentFile.getName().toLowerCase().contains("avro")
-                      ? new AvroFileReader(currentFile)
-                      : new ParquetFileReader(currentFile);
+              Reader reader = detectFileType(currentFile);
               List<String> records = reader.getRecords(numRecords);
               int totalRecords = reader.getNumRecords();
               configureDataPanes(records);
@@ -214,6 +203,25 @@ public class FileViewerToolWindow implements ToolWindowFactory {
           }
         };
     swingWorker.execute();
+  }
+
+  /**
+   * Identifies the file type of the dropped file by attempting to parse it with both readers - either Avro or Parquet.
+   * @param currentFile the file to be parsed
+   * @return the AvroFileReader or ParquetFileReader, else an exception if the file is not recognised by either
+   */
+  private Reader detectFileType(File currentFile) throws IOException {
+    try {
+      return new AvroFileReader(currentFile);
+    } catch(Exception e) {
+      LOGGER.debug(String.format("File %s is not an Avro file", currentFile));
+    }
+    try {
+      return new ParquetFileReader(currentFile);
+    } catch(Exception e) {
+      LOGGER.debug(String.format("File %s is not a Parquet file", currentFile));
+    }
+    throw new IOException(String.format("File %s is not recognised as either Parquet or Avro", currentFile));
   }
 
   /**
