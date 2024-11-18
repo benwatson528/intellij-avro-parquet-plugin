@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -95,7 +96,7 @@ public class AvroFileReaderTest {
   @DisplayName("Assert that an invalid Avro file throws an exception")
   public void testInvalidFile() {
     File file = new File(getClass().getClassLoader().getResource(INVALID_AVRO_FILE).getFile());
-    assertThrows(OutOfMemoryError.class, () -> new AvroFileReader(file));
+    assertThrows(EOFException.class, () -> new AvroFileReader(file));
   }
 
   private AvroFileReader readRecords(String fileName) throws IOException {

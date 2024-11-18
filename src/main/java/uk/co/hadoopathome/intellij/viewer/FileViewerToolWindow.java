@@ -17,6 +17,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.util.ui.UIUtil;
@@ -43,7 +44,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -119,7 +120,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
 
   @Override
   public void createToolWindowContent(Project project, ToolWindow toolWindow) {
-    ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+    ContentFactory contentFactory = ContentFactory.getInstance();
     Content content = contentFactory.createContent(this.toolWindowContent, "", false);
     toolWindow.getContentManager().addContent(content);
   }
@@ -153,7 +154,7 @@ public class FileViewerToolWindow implements ToolWindowFactory {
    * @param syntaxTextArea the text area whose colours should be updated
    */
   private void setTheme(RSyntaxTextArea syntaxTextArea) {
-    if (UIUtil.isUnderDarcula()) {
+    if (!JBColor.isBright()) {
       try {
         Theme theme =
             Theme.load(getClass().getClassLoader().getResourceAsStream("META-INF/dark.xml"));
