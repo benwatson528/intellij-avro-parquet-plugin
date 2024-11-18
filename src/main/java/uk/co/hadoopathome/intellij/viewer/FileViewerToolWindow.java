@@ -20,7 +20,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import com.intellij.util.ui.UIUtil;
 import java.awt.CardLayout;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
