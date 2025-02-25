@@ -13,6 +13,9 @@ version = properties("pluginVersion")
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://jitpack.io")
+    }
 }
 
 dependencies {
@@ -33,6 +36,7 @@ dependencies {
     implementation("com.google.guava:guava:33.3.1-jre")
     implementation("com.fifesoft:rsyntaxtextarea:3.5.2")
     implementation("com.github.wnameless.json:json-flattener:0.17.1")
+    implementation("com.github.rdblue:brotli-codec:0.1.1")
 
     //Test dependencies
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.3")
